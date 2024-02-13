@@ -1,6 +1,7 @@
-import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
-export default async function Home() {
-  const session = await auth();
-  return <>{JSON.stringify(session)}</>;
-}
+const HomePage = () => {
+  redirect("/dashboard");
+};
+
+export default HomePage;
