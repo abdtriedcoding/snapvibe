@@ -1,9 +1,7 @@
-import { Button } from "@/components/ui/button";
+import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth";
 
-export default function Home() {
-  return (
-    <div>
-      <Button>Click me</Button>
-    </div>
-  );
+export default async function Home() {
+  const session = await getServerSession(authOptions);
+  return <>{JSON.stringify(session)}</>;
 }
