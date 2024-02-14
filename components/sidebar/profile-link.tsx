@@ -19,7 +19,7 @@ const ProfileLink = ({ user }: { user: User }) => {
       href={href}
       className={buttonVariants({
         variant: isActive ? "secondary" : "ghost",
-        className: "md:!justify-start space-x-2 md:!my-1.5 !px-3 w-full",
+        className: "lg:!justify-start space-x-2 !my-1.5 !px-3 w-full",
         size: "lg",
       })}
     >
