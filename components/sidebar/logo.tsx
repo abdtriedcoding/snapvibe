@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { SwitchCamera } from "lucide-react";
-import { buttonVariants } from "../ui/button";
+import { buttonVariants } from "@/components/ui/button";
 
 const Logo = () => {
   return (
     <Link
       className={buttonVariants({
         className:
-          "lg:!justify-start space-x-2 !my-1.5 !px-0 w-full hover:bg-transparent",
+          "hidden md:flex lg:!justify-start space-x-2 !my-1.5 !px-0 w-full hover:bg-transparent",
         variant: "ghost",
         size: "lg",
       })}
