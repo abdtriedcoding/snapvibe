@@ -60,7 +60,10 @@ const NavLinks = () => {
             key={link.name}
             href={link.href}
             className={buttonVariants({
-              className: cn("lg:!justify-start space-x-2 !my-1.5 !px-3 w-full",{ "hidden md:flex": link.hideOnMobile }),
+              className: cn(
+                "lg:!justify-start space-x-2 !my-1.5 !px-3 w-full",
+                { "hidden md:flex": link.hideOnMobile }
+              ),
               variant: isActive ? "secondary" : "ghost",
               size: "lg",
             })}

@@ -11,17 +11,23 @@ import {
 import {
   Activity,
   Bookmark,
+  ChevronLeft,
   LogOut,
   Menu,
   MenuIcon,
+  Moon,
   Settings,
+  Sun,
 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "../ui/button";
 import { signOut } from "next-auth/react";
+import { useTheme } from "next-themes";
 
 const DropdownMenuSection = () => {
+  const { theme, setTheme } = useTheme();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -39,10 +45,19 @@ const DropdownMenuSection = () => {
           onClick={(e) => e.preventDefault()}
           className="flex items-center gap-x-2 !px-4 !py-3.5 !m-1.5 !rounded-lg font-medium"
         >
-          <div className="flex items-center space-x-2">
-            <Switch id="theme-mode" />
-            <Label htmlFor="theme-mode">Theme Mode</Label>
-          </div>
+          <Switch
+            id="dark-mode"
+            checked={theme === "dark"}
+            onCheckedChange={(checked) => {
+              setTheme(checked ? "dark" : "light");
+            }}
+          />
+          <Label htmlFor="dark-mode">Switch Theme</Label>
+          {theme === "dark" ? (
+            <Moon size={20} className="ml-auto" />
+          ) : (
+            <Sun size={20} className="ml-auto" />
+          )}
         </DropdownMenuItem>
         <DropdownMenuItem className="!cursor-pointer flex items-center gap-x-2 !px-4 !py-3.5 !m-1.5 !rounded-lg font-medium">
           <Activity className="w-5 h-5" />
