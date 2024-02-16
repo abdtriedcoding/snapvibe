@@ -1,5 +1,5 @@
-import { unstable_noStore as noStore } from "next/cache";
 import prisma from "@/lib/prisma";
+import { unstable_noStore as noStore } from "next/cache";
 
 export async function getPosts() {
   noStore();
@@ -15,11 +15,7 @@ export async function getPosts() {
             createdAt: "desc",
           },
         },
-        likes: {
-          include: {
-            user: true,
-          },
-        },
+        likes: true,
         savedBy: true,
         user: true,
       },

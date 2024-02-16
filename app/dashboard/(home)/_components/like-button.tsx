@@ -3,26 +3,18 @@
 import { cn } from "@/lib/utils";
 import { Heart } from "lucide-react";
 import { useOptimistic } from "react";
-import { Like, Post, SavedPost, User, Comment } from "@prisma/client";
+
 import ActionIcon from "./action-icon";
+import { Like } from "@prisma/client";
 import { likePost } from "@/app/actions/likePost";
-
-export type CommentWithExtras = Comment & { user: User };
-export type LikeWithExtras = Like & { user: User };
-
-type PostWithExtras = Post & {
-  comments: CommentWithExtras[];
-  likes: LikeWithExtras[];
-  savedBy: SavedPost[];
-  user: User;
-};
+import { PostWithExtras } from "@/lib/definitions";
 
 function LikeButton({
   post,
   userId,
 }: {
   post: PostWithExtras;
-  userId?: string;
+  userId: string;
 }) {
   const predicate = (like: Like) =>
     like.userId === userId && like.postId === post.id;

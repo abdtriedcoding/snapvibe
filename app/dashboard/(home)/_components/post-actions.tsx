@@ -1,21 +1,11 @@
 import Link from "next/link";
 import { MessageCircle } from "lucide-react";
-import { Like, Post, SavedPost, User, Comment } from "@prisma/client";
 
 import LikeButton from "./like-button";
 import ActionIcon from "./action-icon";
 import ShareButton from "./share-button";
 import BookmarkButton from "./bookmark-button";
-
-export type CommentWithExtras = Comment & { user: User };
-export type LikeWithExtras = Like & { user: User };
-
-type PostWithExtras = Post & {
-  comments: CommentWithExtras[];
-  likes: LikeWithExtras[];
-  savedBy: SavedPost[];
-  user: User;
-};
+import { PostWithExtras } from "@/lib/definitions";
 
 const PostActions = ({
   post,

@@ -1,21 +1,13 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Bookmark } from "lucide-react";
 import { useOptimistic } from "react";
-import { Like, Post, SavedPost, User, Comment } from "@prisma/client";
+import { Bookmark } from "lucide-react";
+
 import ActionIcon from "./action-icon";
+import { SavedPost } from "@prisma/client";
+import { PostWithExtras } from "@/lib/definitions";
 import { bookmarkPost } from "@/app/actions/bookmarkPost";
-
-export type CommentWithExtras = Comment & { user: User };
-export type LikeWithExtras = Like & { user: User };
-
-type PostWithExtras = Post & {
-  comments: CommentWithExtras[];
-  likes: LikeWithExtras[];
-  savedBy: SavedPost[];
-  user: User;
-};
 
 function BookmarkButton({
   post,
