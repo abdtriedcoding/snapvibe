@@ -5,6 +5,7 @@ import { Heart } from "lucide-react";
 import { useOptimistic } from "react";
 import { Like, Post, SavedPost, User, Comment } from "@prisma/client";
 import ActionIcon from "./action-icon";
+import { likePost } from "@/app/actions/likePost";
 
 export type CommentWithExtras = Comment & { user: User };
 export type LikeWithExtras = Like & { user: User };
@@ -38,11 +39,10 @@ function LikeButton({
   return (
     <div className="flex flex-col">
       <form
-        action={async (formData: FormData) => {
-          const postId = formData.get("postId");
-          addOptimisticLike({ postId, userId });
+        action={async () => {
+          addOptimisticLike({ postId: post.id, userId });
 
-          // await likePost(postId);
+          await likePost(post.id);
         }}
       >
         <ActionIcon>
