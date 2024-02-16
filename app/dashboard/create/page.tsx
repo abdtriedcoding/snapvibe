@@ -20,6 +20,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { CreatePost } from "@/lib/schema";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { UploadDropzone } from "@/lib/utils";
+import { X } from "lucide-react";
+import { toast } from "sonner";
 
 const CreatePage = () => {
   // 1. Define your form.
@@ -27,7 +30,7 @@ const CreatePage = () => {
     resolver: zodResolver(CreatePost),
     defaultValues: {
       caption: "",
-      fileUrl: undefined,
+      fileUrl: "",
     },
   });
 
@@ -48,7 +51,7 @@ const CreatePage = () => {
 
   return (
     <Dialog open={isCreatePage} onOpenChange={(open) => !open && router.back()}>
-      <DialogContent>
+      <DialogContent className="pt-10">
         <DialogHeader>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -61,6 +64,10 @@ const CreatePage = () => {
                       fill
                       className="rounded-md object-cover"
                     />
+                    <X
+                      onClick={() => form.setValue("fileUrl", "")}
+                      className="absolute top-0 right-0 m-2 cursor-pointer"
+                    />
                   </AspectRatio>
                 </div>
               ) : (
@@ -71,7 +78,16 @@ const CreatePage = () => {
                     <FormItem>
                       <FormLabel htmlFor="picture">Picture</FormLabel>
                       <FormControl>
-                        <p>Todo upload file</p>
+                        <UploadDropzone
+                          endpoint="imageUploader"
+                          onClientUploadComplete={(res) => {
+                            form.setValue("fileUrl", res[0].url);
+                            toast.success("Upload complete");
+                          }}
+                          onUploadError={(error: Error) => {
+                            toast.error("Upload failed");
+                          }}
+                        />
                       </FormControl>
                       <FormDescription>
                         Upload a picture to post.
