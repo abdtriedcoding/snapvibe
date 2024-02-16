@@ -5,6 +5,7 @@ import { Like, Post, SavedPost, User, Comment } from "@prisma/client";
 import LikeButton from "./like-button";
 import ActionIcon from "./action-icon";
 import ShareButton from "./share-button";
+import BookmarkButton from "./bookmark-button";
 
 export type CommentWithExtras = Comment & { user: User };
 export type LikeWithExtras = Like & { user: User };
@@ -32,6 +33,7 @@ const PostActions = ({
         </ActionIcon>
       </Link>
       <ShareButton postId={post.id} />
+      <BookmarkButton post={post} userId={userId} />
     </div>
   );
 };
