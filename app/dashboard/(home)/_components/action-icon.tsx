@@ -1,8 +1,20 @@
 import { Button } from "@/components/ui/button";
 
-const ActionIcon = ({ children }: { children: React.ReactNode }) => {
+const ActionIcon = ({
+  children,
+  onClick,
+}: {
+  children: React.ReactNode;
+  onClick?: () => void;
+}) => {
   return (
-    <Button type="submit" variant={"ghost"} size={"icon"} className="h-9 w-9">
+    <Button
+      onClick={onClick}
+      type="submit"
+      variant={"ghost"}
+      size={"icon"}
+      className="h-9 w-9"
+    >
       {children}
     </Button>
   );
