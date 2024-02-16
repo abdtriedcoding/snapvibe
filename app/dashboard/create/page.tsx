@@ -23,9 +23,9 @@ import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { UploadDropzone } from "@/lib/utils";
 import { X } from "lucide-react";
 import { toast } from "sonner";
+import { createPost } from "@/app/actions/createPost";
 
 const CreatePage = () => {
-  // 1. Define your form.
   const form = useForm<z.infer<typeof CreatePost>>({
     resolver: zodResolver(CreatePost),
     defaultValues: {
@@ -33,13 +33,6 @@ const CreatePage = () => {
       fileUrl: "",
     },
   });
-
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof CreatePost>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
 
   const pathname = usePathname();
   const router = useRouter();
@@ -54,7 +47,16 @@ const CreatePage = () => {
       <DialogContent className="pt-10">
         <DialogHeader>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form
+              onSubmit={form.handleSubmit(async (values) => {
+                const res = await createPost(values);
+                if (res) {
+                  return toast.error(res.message);
+                }
+                toast.success("Post Uploaded Successfully");
+              })}
+              className="space-y-4"
+            >
               {!!fileUrl ? (
                 <div className="h-96 md:h-[450px] overflow-hidden rounded-md">
                   <AspectRatio ratio={1 / 1} className="relative h-full">
@@ -74,7 +76,7 @@ const CreatePage = () => {
                 <FormField
                   control={form.control}
                   name="fileUrl"
-                  render={({ field, fieldState }) => (
+                  render={() => (
                     <FormItem>
                       <FormLabel htmlFor="picture">Picture</FormLabel>
                       <FormControl>
@@ -84,7 +86,7 @@ const CreatePage = () => {
                             form.setValue("fileUrl", res[0].url);
                             toast.success("Upload complete");
                           }}
-                          onUploadError={(error: Error) => {
+                          onUploadError={() => {
                             toast.error("Upload failed");
                           }}
                         />
