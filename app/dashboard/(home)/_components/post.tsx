@@ -4,6 +4,7 @@ import { Like, Post, SavedPost, User, Comment } from "@prisma/client";
 
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Timestamp from "./timestamp";
 
 export type CommentWithExtras = Comment & { user: User };
 export type LikeWithExtras = Like & { user: User };
@@ -33,10 +34,9 @@ async function Post({ post }: { post: PostWithExtras }) {
           <div className="text-sm">
             <p className="space-x-1">
               <span className="font-semibold">{post.user.username}</span>
+              <Timestamp createdAt={post.createdAt} />
             </p>
-            <p className="text-xs text-black dark:text-white font-medium">
-              Dubai, United Arab Emirates
-            </p>
+            <p className="text-xs font-medium">Dubai, United Arab Emirates</p>
           </div>
         </div>
       </div>
