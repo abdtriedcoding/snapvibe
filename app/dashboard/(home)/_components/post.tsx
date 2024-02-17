@@ -5,6 +5,7 @@ import { Like, Post, SavedPost, User, Comment } from "@prisma/client";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Timestamp from "./timestamp";
+import PostOptions from "./post-options";
 
 export type CommentWithExtras = Comment & { user: User };
 export type LikeWithExtras = Like & { user: User };
@@ -18,7 +19,8 @@ type PostWithExtras = Post & {
 
 async function Post({ post }: { post: PostWithExtras }) {
   const session = await auth();
-
+  const userId = session?.user?.id;
+  if (!userId) return;
   if (!session?.user) return null;
 
   return (
@@ -39,6 +41,11 @@ async function Post({ post }: { post: PostWithExtras }) {
             <p className="text-xs font-medium">Dubai, United Arab Emirates</p>
           </div>
         </div>
+        <PostOptions
+          postId={post.id}
+          postUserId={post.userId}
+          userId={userId}
+        />
       </div>
 
       <Card className="relative h-[450px] w-full overflow-hidden rounded-none sm:rounded-md">
