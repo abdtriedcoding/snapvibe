@@ -5,6 +5,8 @@ import SubmitButton from "./submit-button";
 
 import { MoreHorizontal } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { deletePost } from "@/app/actions/deletePost";
+import { toast } from "sonner";
 
 type Props = {
   postId: string;
@@ -22,9 +24,17 @@ const PostOptions = ({ postId, postUserId, userId }: Props) => {
       </DialogTrigger>
       <DialogContent className="bg-white dark:bg-neutral-800 !p-0 overflow-hidden !gap-0">
         {isPostMine && (
-          <SubmitButton className="text-red-500 font-bold disabled:cursor-not-allowed w-full p-3 border-b border-zinc-300 dark:border-neutral-700 focus:outline-none">
-            Delete post
-          </SubmitButton>
+          <form
+            action={async () => {
+              const { message } = await deletePost(postId);
+              toast(message);
+            }}
+            className="postOption"
+          >
+            <SubmitButton className="text-red-500 font-bold disabled:cursor-not-allowed w-full p-3">
+              Delete post
+            </SubmitButton>
+          </form>
         )}
 
         {isPostMine && (
