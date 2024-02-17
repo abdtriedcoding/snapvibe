@@ -10,7 +10,7 @@ import { PostWithExtras } from "@/lib/definitions";
 import Link from "next/link";
 import Comments from "./comments";
 
-async function Post({ post }: { post: PostWithExtras }) {
+const Post = async ({ post }: { post: PostWithExtras }) => {
   const session = await auth();
   const userId = session?.user?.id;
   if (!userId) return;
@@ -63,6 +63,6 @@ async function Post({ post }: { post: PostWithExtras }) {
       <Comments postId={post.id} comments={post.comments} user={session.user} />
     </div>
   );
-}
+};
 
 export default Post;
