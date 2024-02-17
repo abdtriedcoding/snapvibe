@@ -87,7 +87,7 @@ const IndividualPost = async ({ id }: { id: string }) => {
           )}
 
           {post.comments.length > 0 && (
-            <ScrollArea className="hidden md:inline py-1.5 flex-1">
+            <ScrollArea className="hidden h-[250px] md:inline py-1.5">
               <MiniPost post={post} />
               {post.comments.map((comment) => (
                 <Comment key={comment.id} comment={comment} />
