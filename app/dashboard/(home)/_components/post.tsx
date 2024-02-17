@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Timestamp from "./timestamp";
 import PostOptions from "./post-options";
+import PostActions from "./post-actions";
 
 export type CommentWithExtras = Comment & { user: User };
 export type LikeWithExtras = Like & { user: User };
@@ -56,6 +57,7 @@ async function Post({ post }: { post: PostWithExtras }) {
           className="sm:rounded-md object-cover"
         />
       </Card>
+      <PostActions post={post} userId={userId} />
     </div>
   );
 }
