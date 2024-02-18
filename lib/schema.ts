@@ -7,6 +7,7 @@ export const PostSchema = z.object({
 });
 
 export const CreatePost = PostSchema.omit({ id: true });
+export const UpdatePost = PostSchema;
 
 export const CommentSchema = z.object({
   id: z.string(),

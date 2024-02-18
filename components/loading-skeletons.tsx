@@ -1,5 +1,12 @@
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export const PostSkeleton = () => {
   return (
@@ -77,3 +84,23 @@ export const MorePostsSkelton = () => {
     </div>
   );
 };
+
+export function EditPostSkeleton() {
+  return (
+    <Dialog open>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Edit info</DialogTitle>
+        </DialogHeader>
+
+        <div className="h-96 md:h-[250px] overflow-hidden rounded-md">
+          <AspectRatio ratio={1 / 1} className="relative h-full">
+            <Skeleton className="h-full w-full" />
+          </AspectRatio>
+        </div>
+
+        <Skeleton className="h-10 w-full" />
+      </DialogContent>
+    </Dialog>
+  );
+}
