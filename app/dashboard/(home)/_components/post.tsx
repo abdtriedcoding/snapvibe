@@ -7,6 +7,8 @@ import Timestamp from "./timestamp";
 import PostOptions from "./post-options";
 import PostActions from "./post-actions";
 import { PostWithExtras } from "@/lib/definitions";
+import Link from "next/link";
+import Comments from "./comments";
 
 async function Post({ post }: { post: PostWithExtras }) {
   const session = await auth();
@@ -48,6 +50,17 @@ async function Post({ post }: { post: PostWithExtras }) {
         />
       </Card>
       <PostActions post={post} userId={userId} />
+
+      {post.caption && (
+        <div className="text-sm leading-none flex items-center space-x-2 font-medium px-3 sm:px-0">
+          <Link href={`/dashboard/${post.user.username}`} className="font-bold">
+            {post.user.username}
+          </Link>
+          <p>{post.caption}</p>
+        </div>
+      )}
+
+      <Comments postId={post.id} comments={post.comments} user={session.user} />
     </div>
   );
 }
