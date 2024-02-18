@@ -8,3 +8,8 @@ export type PostWithExtras = Post & {
   savedBy: SavedPost[];
   user: User;
 };
+
+export type UserProfile = User & {
+  posts: Post[];
+  saved: SavedPost[];
+};
