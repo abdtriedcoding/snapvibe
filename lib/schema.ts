@@ -7,5 +7,3 @@ export const PostSchema = z.object({
 });
 
 export const CreatePost = PostSchema.omit({ id: true });
-export const UpdatePost = PostSchema;
-export const DeletePost = PostSchema.pick({ id: true });

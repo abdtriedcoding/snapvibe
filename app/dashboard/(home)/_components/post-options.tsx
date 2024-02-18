@@ -1,12 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import SubmitButton from "./submit-button";
-
+import { toast } from "sonner";
 import { MoreHorizontal } from "lucide-react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+
+import SubmitButton from "./submit-button";
 import { deletePost } from "@/app/actions/deletePost";
-import { toast } from "sonner";
 
 type Props = {
   postId: string;

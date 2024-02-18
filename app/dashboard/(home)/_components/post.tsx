@@ -1,22 +1,12 @@
 import Image from "next/image";
 import { auth } from "@/lib/auth";
-import { Like, Post, SavedPost, User, Comment } from "@prisma/client";
-
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import Timestamp from "./timestamp";
 import PostOptions from "./post-options";
 import PostActions from "./post-actions";
-
-export type CommentWithExtras = Comment & { user: User };
-export type LikeWithExtras = Like & { user: User };
-
-type PostWithExtras = Post & {
-  comments: CommentWithExtras[];
-  likes: LikeWithExtras[];
-  savedBy: SavedPost[];
-  user: User;
-};
+import { PostWithExtras } from "@/lib/definitions";
 
 async function Post({ post }: { post: PostWithExtras }) {
   const session = await auth();
