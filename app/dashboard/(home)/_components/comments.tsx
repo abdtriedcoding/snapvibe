@@ -18,6 +18,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import CommentsDialog from "../../p/[id]/_components/comments-dialog";
 
 function Comments({
   postId,
@@ -50,13 +51,11 @@ function Comments({
   return (
     <div className="space-y-0.5 px-3 sm:px-0">
       {commentsCount > 1 && (
-        <Link
-          scroll={false}
-          href={`/dashboard/p/${postId}/comments`}
-          className="text-sm font-medium text-neutral-500"
-        >
-          View all {commentsCount} comments
-        </Link>
+        <CommentsDialog comments={comments}>
+          <p className="text-sm font-medium text-neutral-500 cursor-pointer w-fit">
+            View all {commentsCount} comments
+          </p>
+        </CommentsDialog>
       )}
 
       {optimisticComments.slice(0, 3).map((comment, i) => {
