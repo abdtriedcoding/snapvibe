@@ -1,5 +1,4 @@
 "use client";
-
 import { cn } from "@/lib/utils";
 import { Heart } from "lucide-react";
 import { useOptimistic } from "react";
@@ -9,13 +8,13 @@ import { Like } from "@prisma/client";
 import { likePost } from "@/app/actions/likePost";
 import { PostWithExtras } from "@/lib/definitions";
 
-function LikeButton({
+const LikeButton = ({
   post,
   userId,
 }: {
   post: PostWithExtras;
   userId: string;
-}) {
+}) => {
   const predicate = (like: Like) =>
     like.userId === userId && like.postId === post.id;
   const [optimisticLikes, addOptimisticLike] = useOptimistic<Like[]>(
@@ -53,6 +52,6 @@ function LikeButton({
       )}
     </div>
   );
-}
+};
 
 export default LikeButton;
