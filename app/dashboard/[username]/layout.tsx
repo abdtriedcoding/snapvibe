@@ -2,12 +2,12 @@ import Link from "next/link";
 import { auth } from "@/lib/auth";
 import { notFound } from "next/navigation";
 import type { Metadata, ResolvingMetadata } from "next";
+import { fetchProfile } from "@/app/actions/fetchUserProfile";
 
+import ProfileTabs from "./_components/profile-tab";
 import { buttonVariants } from "@/components/ui/button";
 import ProfileAvatarDialog from "./_components/profile-avatar-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { fetchProfile } from "@/app/actions/fetchUserProfile";
-import ProfileTabs from "./_components/profile-tab";
 
 type Props = {
   params: {
@@ -80,6 +80,9 @@ async function ProfileLayout({ children, params: { username } }: Props) {
             <div className="text-sm text-center md:text-left">
               <p className="font-semibold">{profile.name}</p>
               <p className="text-gray-600">{profile.bio}</p>
+              <Link target="_blank" href={`${profile.website}`}>
+                <p className="pt-1 text-blue-500">{profile.website}</p>
+              </Link>
             </div>
           </div>
         </div>
