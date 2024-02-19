@@ -1,16 +1,16 @@
-import { Suspense } from "react";
 import Post from "./_components/post";
 import { getPosts } from "@/app/actions/getPosts";
-import { PostsSkeleton } from "@/components/loading-skeletons";
+import { LoadMore } from "./_components/load-more";
 
 const DashboardPage = async () => {
-  const posts = await getPosts();
+  const posts = await getPosts(1);
   return (
-    <Suspense fallback={<PostsSkeleton />}>
+    <>
       {posts.map((post) => (
         <Post key={post.id} post={post} />
       ))}
-    </Suspense>
+      <LoadMore />
+    </>
   );
 };
 
