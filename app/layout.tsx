@@ -1,16 +1,16 @@
+import "./globals.css";
 import { Toaster } from "sonner";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import { getServerSession } from "next-auth";
+import { Poppins } from "next/font/google";
 import { authOptions } from "@/lib/auth";
-import SessionProvider from "@/components/providers/auth-provider";
+import { getServerSession } from "next-auth";
+import { ourFileRouter } from "./api/uploadthing/core";
+import { extractRouterConfig } from "uploadthing/server";
 import { ThemeProvider } from "@/components/theme-provider";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
-import { extractRouterConfig } from "uploadthing/server";
-import { ourFileRouter } from "./api/uploadthing/core";
+import SessionProvider from "@/components/providers/auth-provider";
 
-const inter = Inter({ subsets: ["latin"] });
+const font = Poppins({ subsets: ["latin"], weight: ["500"] });
 
 export const metadata: Metadata = {
   title: "snapvibe",
@@ -28,7 +28,7 @@ export default async function RootLayout({
   return (
     <SessionProvider session={session}>
       <html lang="en">
-        <body className={inter.className}>
+        <body className={font.className}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
