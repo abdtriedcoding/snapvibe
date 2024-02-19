@@ -67,3 +67,13 @@ export const SinglePostSkeleton = () => {
     </Card>
   );
 };
+
+export const MorePostsSkelton = () => {
+  return (
+    <div className="relative overflow-hidden h-[250px] grid grid-cols-3 gap-0.5 w-full">
+      <Skeleton className="h-full w-full" />
+      <Skeleton className="h-full w-full" />
+      <Skeleton className="h-full w-full" />
+    </div>
+  );
+};
