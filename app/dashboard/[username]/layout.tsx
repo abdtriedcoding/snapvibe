@@ -7,6 +7,7 @@ import { buttonVariants } from "@/components/ui/button";
 import ProfileAvatarDialog from "./_components/profile-avatar-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { fetchProfile } from "@/app/actions/fetchUserProfile";
+import ProfileTabs from "./_components/profile-tab";
 
 type Props = {
   params: {
@@ -82,7 +83,7 @@ async function ProfileLayout({ children, params: { username } }: Props) {
             </div>
           </div>
         </div>
-
+        <ProfileTabs profile={profile} isCurrentUser={isCurrentUser} />
         {children}
       </div>
     </>
