@@ -1,3 +1,4 @@
+import { login } from '@/app/actions/auth'
 import { FcGoogle } from 'react-icons/fc'
 import { FaXTwitter } from 'react-icons/fa6'
 import { Button } from '@/components/ui/button'
@@ -17,12 +18,12 @@ export default function LoginModalContent() {
         <CardDescription>to continue to platform</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col space-y-2">
-          <Button variant="outline">
+        <div className="flex w-full flex-col space-y-2">
+          <Button onClick={() => login('google')} variant="outline">
             <FcGoogle className="mr-2 h-5 w-5" />
             Continue with Google
           </Button>
-          <Button variant="outline">
+          <Button onClick={() => login('twitter')} variant="outline">
             <FaXTwitter className="mr-2 h-5 w-5" />
             Continue with Twitter
           </Button>

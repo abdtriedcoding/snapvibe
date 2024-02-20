@@ -1,8 +1,8 @@
-'use client'
-
 import Link from 'next/link'
+import { type User } from 'next-auth'
+import { logout } from '@/app/actions/auth'
 import { Button } from '@/components/ui/button'
-import { LayoutGrid, LogOut, User } from 'lucide-react'
+import { LayoutGrid, LogOut, UserIcon } from 'lucide-react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   Tooltip,
@@ -20,7 +20,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-export default function UserNav() {
+export default function UserNav({ user }: { user: User }) {
   return (
     <DropdownMenu>
       <TooltipProvider disableHoverableContent>
@@ -32,8 +32,10 @@ export default function UserNav() {
                 className="relative h-8 w-8 rounded-full"
               >
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src="#" alt="Avatar" />
-                  <AvatarFallback className="bg-transparent">JD</AvatarFallback>
+                  <AvatarImage src={user?.image ?? ''} alt="Avatar" />
+                  <AvatarFallback className="bg-transparent">
+                    {user?.name?.charAt(0)}
+                  </AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
@@ -45,9 +47,9 @@ export default function UserNav() {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">John Doe</p>
+            <p className="text-sm font-medium leading-none">{user?.name}</p>
             <p className="text-xs leading-none text-muted-foreground">
-              johndoe@example.com
+              {user?.email}
             </p>
           </div>
         </DropdownMenuLabel>
@@ -61,7 +63,7 @@ export default function UserNav() {
           </DropdownMenuItem>
           <DropdownMenuItem className="hover:cursor-pointer" asChild>
             <Link href="/account" className="flex items-center">
-              <User className="mr-3 h-4 w-4 text-muted-foreground" />
+              <UserIcon className="mr-3 h-4 w-4 text-muted-foreground" />
               Account
             </Link>
           </DropdownMenuItem>
@@ -69,9 +71,7 @@ export default function UserNav() {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="hover:cursor-pointer"
-          onClick={() => {
-            console.log('Logout succeeded')
-          }}
+          onClick={() => logout()}
         >
           <LogOut className="mr-3 h-4 w-4 text-muted-foreground" />
           Sign out
