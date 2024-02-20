@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Dialog,
   DialogClose,
@@ -7,26 +8,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import useMount from "@/hook/useMount";
-import { UserProfile } from "@/lib/definitions";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useSession } from "next-auth/react";
-import { useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { z } from "zod";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { UploadButton } from "@/lib/utils";
-import SubmitButton from "../../(home)/_components/submit-button";
+
+import { z } from "zod";
+import { toast } from "sonner";
+import useMount from "@/hook/useMount";
+import { useRef, useState } from "react";
 import { UpdateUser } from "@/lib/schema";
+import { useForm } from "react-hook-form";
+import { useSession } from "next-auth/react";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { UploadButton } from "@/lib/utils";
+import { UserProfile } from "@/lib/definitions";
+import { updateProfile } from "@/app/actions/updateProfile";
+import SubmitButton from "../../(home)/_components/submit-button";
 
 const ProfileAvatarDialog = ({
   user,
@@ -76,9 +73,8 @@ const ProfileAvatarDialog = ({
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(async (values) => {
-                // const { message } = await updateProfile(values);
-                // toast(message);
-                console.log("Profile Updated");
+                const { message } = await updateProfile(values);
+                toast(message);
 
                 setOpen(false);
               })}

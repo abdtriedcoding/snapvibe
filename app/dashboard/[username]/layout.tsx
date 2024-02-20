@@ -40,9 +40,9 @@ async function ProfileLayout({ children, params: { username } }: Props) {
   return (
     <>
       <div className="max-w-4xl mx-auto">
-        <div className="flex gap-x-5 md:gap-x-10 px-4">
+        <div className="flex flex-col items-center md:flex-row md:items-start gap-4 md:gap-10 px-4">
           <ProfileAvatarDialog user={profile}>
-            <Avatar className="w-20 h-20 md:w-36 md:h-36 cursor-pointer">
+            <Avatar className="w-24 h-24 md:w-36 md:h-36 cursor-pointer">
               <AvatarImage
                 src={profile.image ?? "https://github.com/shadcn.png"}
               />
@@ -50,9 +50,11 @@ async function ProfileLayout({ children, params: { username } }: Props) {
             </Avatar>
           </ProfileAvatarDialog>
 
-          <div className="md:px-10 space-y-4">
-            <div className="grid grid-cols-2 md:grid-cols-4 items-center gap-3">
-              <p className="font-semibold text-xl">{profile.username}</p>
+          <div className="flex flex-col flex-grow">
+            <div className="flex space-x-3 items-center justify-center md:justify-between w-full mb-4">
+              <h1 className="font-semibold text-2xl md:text-3xl text-center md:text-left">
+                {profile.username}
+              </h1>
               {isCurrentUser && (
                 <Link
                   href={`/dashboard/edit-profile`}
@@ -62,20 +64,21 @@ async function ProfileLayout({ children, params: { username } }: Props) {
                     size: "sm",
                   })}
                 >
-                  Edit profile
+                  Edit Profile
                 </Link>
               )}
             </div>
 
-            <div className="flex items-center gap-x-7">
+            <div className="flex items-center justify-center md:justify-start w-full mb-4">
               <p className="font-medium">
-                <strong>{profile.posts.length} posts</strong>
+                <span className="font-semibold">{profile.posts.length}</span>{" "}
+                posts
               </p>
             </div>
 
-            <div className="text-sm">
-              <div className="font-bold">{profile.name}</div>
-              <p>{profile.bio}</p>
+            <div className="text-sm text-center md:text-left">
+              <p className="font-semibold">{profile.name}</p>
+              <p className="text-gray-600">{profile.bio}</p>
             </div>
           </div>
         </div>
