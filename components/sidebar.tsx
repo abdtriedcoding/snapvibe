@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import Menu from './menu'
 import { cn } from '@/lib/utils'
+import { Camera } from 'lucide-react'
 import { useStore } from '@/hook/use-store'
-import { PanelsTopLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { SidebarToggle } from './sidebar-toggle'
 import { useSidebarToggle } from '@/hook/use-sidebar-toggle'
@@ -15,7 +15,7 @@ export default function Sidebar() {
   return (
     <aside
       className={cn(
-        'fixed left-0 top-0 z-20 h-screen -translate-x-full transition-[width] duration-300 ease-in-out lg:translate-x-0',
+        'fixed left-0 top-0 z-20 h-screen -translate-x-full transition-[width] duration-300 ease-in-out lg:translate-x-0 border-r-2',
         sidebar?.isOpen === false ? 'w-[90px]' : 'w-72'
       )}
     >
@@ -29,8 +29,8 @@ export default function Sidebar() {
           variant="link"
           asChild
         >
-          <Link href="/dashboard" className="flex items-center gap-2">
-            <PanelsTopLeft className="mr-1 h-6 w-6" />
+          <Link href="/" className="flex items-center gap-2">
+            <Camera className="mr-1 h-6 w-6" />
             <h1
               className={cn(
                 'whitespace-nowrap text-lg font-bold transition-[transform,opacity,display] duration-300 ease-in-out',
@@ -39,7 +39,7 @@ export default function Sidebar() {
                   : 'translate-x-0 opacity-100'
               )}
             >
-              Brand
+              Snapvibe
             </h1>
           </Link>
         </Button>

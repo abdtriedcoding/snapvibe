@@ -1,9 +1,10 @@
 'use client'
 
 import { cn } from '@/lib/utils'
-import Sidebar from '@/components/sidebar'
 import { useStore } from '@/hook/use-store'
 import { useSidebarToggle } from '@/hook/use-sidebar-toggle'
+import Sidebar from '@/components/sidebar'
+import MobileSidebar from '@/components/mobile-sidebar'
 
 export default function DashboardLayout({
   children,
@@ -23,6 +24,7 @@ export default function DashboardLayout({
           sidebar?.isOpen === false ? 'lg:ml-[90px]' : 'lg:ml-72'
         )}
       >
+        <MobileSidebar />
         {children}
       </main>
     </>
