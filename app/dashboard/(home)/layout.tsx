@@ -1,5 +1,9 @@
 const HomePageLayout = ({ children }: { children: React.ReactNode }) => {
-  return <main className="max-w-2xl mx-auto space-y-8">{children}</main>;
-};
+  return (
+    <main className="mx-auto min-h-screen max-w-2xl space-y-8 p-4">
+      {children}
+    </main>
+  )
+}
 
-export default HomePageLayout;
+export default HomePageLayout

@@ -13,8 +13,10 @@ const LikeButton = ({
   userId,
 }: {
   post: PostWithExtras;
-  userId: string;
-}) => {
+  userId: string | undefined;
+  }) => {
+  
+  if (!userId) return;
   const predicate = (like: Like) =>
     like.userId === userId && like.postId === post.id;
   const [optimisticLikes, addOptimisticLike] = useOptimistic<Like[]>(
