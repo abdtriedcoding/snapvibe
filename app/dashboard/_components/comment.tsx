@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { type User } from '@prisma/client'
+import { type User } from 'next-auth'
 import { type CommentWithUser } from '@/lib/definitions'
 import Timestamp from '@/app/dashboard/(home)/_components/timestamp'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -12,7 +12,7 @@ export default function Comment({
   user,
 }: {
   comment: CommentWithUser
-  user: User | null
+  user: User | undefined
 }) {
   const username = comment.user.username ?? comment.user.name
 
@@ -36,7 +36,7 @@ export default function Comment({
         </div>
         <div className="flex h-5 items-center space-x-2.5">
           <Timestamp createdAt={comment.createdAt} />
-          {user && comment.userId === user?.id && (
+          {user && comment.userId === user.id && (
             <CommentOptions comment={comment} />
           )}
         </div>

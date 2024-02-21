@@ -11,7 +11,7 @@ export const formSchema = z.object({
 })
 
 export const CommentSchema = z.object({
-  body: z.string(),
+  body: z.string().trim().min(1),
 })
 
 // TODO: remove all above below schemas

@@ -27,7 +27,7 @@ export default function AdminPanelLayout({
         )}
       >
         <MobileSidebar user={user} />
-        {children}
+        <main className="p-4">{children}</main>
       </main>
     </>
   )

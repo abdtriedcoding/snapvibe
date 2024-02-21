@@ -1,33 +1,34 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import { useSession } from "next-auth/react";
-import { PostWithExtras } from "@/lib/definitions";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Link from 'next/link'
+import { type User } from 'next-auth'
+import { type PostWithExtras } from '@/lib/definitions'
+import Timestamp from '@/app/dashboard/(home)/_components/timestamp'
+import PostOptions from '@/app/dashboard/(home)/_components/post-options'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
-import Timestamp from "@/app/dashboard/(home)/_components/timestamp";
-import PostOptions from "@/app/dashboard/(home)/_components/post-options";
-
-const MiniPost = ({ post }: { post: PostWithExtras }) => {
-  const username = post.user.username;
-  const href = `/dashboard/${username}`;
-  const { data: session } = useSession();
-  const user = session?.user;
-
-  if (!user) return null;
+export default function MiniPost({
+  post,
+  user,
+}: {
+  post: PostWithExtras
+  user: User | undefined
+}) {
+  const username = post.user.username ?? post.user.name
+  const href = `/dashboard/${username}`
 
   return (
-    <div className="group p-3 px-3.5  flex items-start space-x-2.5">
+    <div className="flex items-start space-x-2.5 p-3">
       <Link href={href}>
         <Avatar className="relative h-8 w-8">
           <AvatarImage
-            src={post.user.image ?? "https://github.com/shadcn.png"}
+            src={post.user.image ?? 'https://github.com/shadcn.png'}
           />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </Link>
       <div className="space-y-1.5">
-        <div className="flex items-center space-x-1.5 leading-none text-sm">
+        <div className="flex items-center space-x-1.5 text-sm leading-none">
           <Link href={href} className="font-semibold">
             {username}
           </Link>
@@ -38,13 +39,10 @@ const MiniPost = ({ post }: { post: PostWithExtras }) => {
           <PostOptions
             postId={post.id}
             postUserId={post.user.id}
-            userId={user.id}
-            className="hidden group-hover:inline"
+            userId={user?.id}
           />
         </div>
       </div>
     </div>
-  );
-};
-
-export default MiniPost;
+  )
+}
