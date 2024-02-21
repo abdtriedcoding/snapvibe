@@ -1,15 +1,15 @@
-"use client";
+'use client'
 
-import { useFormStatus } from "react-dom";
+import { useFormStatus } from 'react-dom'
 
 type Props = {
-  children: React.ReactNode;
-  className: string;
-  onClick: () => void;
-};
+  children: React.ReactNode
+  className: string
+  onClick?: () => void
+}
 
-const SubmitButton = ({ children, className, onClick }: Props) => {
-  const { pending } = useFormStatus();
+export default function SubmitButton({ children, className, onClick }: Props) {
+  const { pending } = useFormStatus()
 
   return (
     <button
@@ -20,7 +20,5 @@ const SubmitButton = ({ children, className, onClick }: Props) => {
     >
       {children}
     </button>
-  );
-};
-
-export default SubmitButton;
+  )
+}
