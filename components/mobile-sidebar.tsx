@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { type User } from '@prisma/client'
 import { Button } from '@/components/ui/button'
 import { Camera, MenuIcon } from 'lucide-react'
 import {
@@ -11,14 +12,8 @@ import Menu from './menu'
 import UserNav from './user-nav'
 import ModeToggle from './mode-toggle'
 import LoginModal from './login-modal'
-import { type Session } from 'next-auth'
 
-export default function MobileSidebar({
-  session,
-}: {
-  session: Session | null
-}) {
-  const user = session?.user
+export default function MobileSidebar({ user }: { user: User | null }) {
   return (
     <header className="sticky top-0 z-10 w-full bg-background/95 shadow backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:shadow-secondary">
       <div className="mx-4 flex h-14 items-center sm:mx-8">

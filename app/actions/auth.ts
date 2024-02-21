@@ -9,6 +9,6 @@ export async function login(provider: string) {
 }
 
 export async function logout() {
-  await signOut()
+  await signOut({ redirectTo: '/dashboard' })
   revalidatePath('/')
 }

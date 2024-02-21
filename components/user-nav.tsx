@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { type User } from 'next-auth'
+import { type User } from '@prisma/client'
 import { logout } from '@/app/actions/auth'
 import { Button } from '@/components/ui/button'
 import { LayoutGrid, LogOut, UserIcon } from 'lucide-react'
@@ -32,7 +32,10 @@ export default function UserNav({ user }: { user: User }) {
                 className="relative h-8 w-8 rounded-full"
               >
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src={user?.image ?? ''} alt="Avatar" />
+                  {/* TODO: add default photo */}
+                  {user?.image && (
+                    <AvatarImage src={user?.image} alt="Avatar" />
+                  )}
                   <AvatarFallback className="bg-transparent">
                     {user?.name?.charAt(0)}
                   </AvatarFallback>

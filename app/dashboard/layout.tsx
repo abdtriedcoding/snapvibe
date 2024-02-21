@@ -1,4 +1,4 @@
-import { auth } from '@/lib/auth'
+import getCurrentUser from '@/app/actions/get-current-user'
 import AdminPanelLayout from '@/components/admin-panel-layout'
 
 export default async function DashboardLayout({
@@ -6,6 +6,6 @@ export default async function DashboardLayout({
 }: {
   children: React.ReactNode
 }) {
-  const session = await auth()
-  return <AdminPanelLayout session={session}>{children}</AdminPanelLayout>
+  const user = await getCurrentUser()
+  return <AdminPanelLayout user={user}>{children}</AdminPanelLayout>
 }
