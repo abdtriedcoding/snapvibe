@@ -2,14 +2,14 @@ import './globals.css'
 import { Toaster } from 'sonner'
 import type { Metadata } from 'next'
 import { Poppins } from 'next/font/google'
-import { ourFileRouter } from './api/uploadthing/core'
-import { extractRouterConfig } from 'uploadthing/server'
 import { ThemeProvider } from '@/components/theme-provider'
+import { extractRouterConfig } from 'uploadthing/server'
+import { ourFileRouter } from '@/app/api/uploadthing/core'
 import { NextSSRPlugin } from '@uploadthing/react/next-ssr-plugin'
-import SessionProvider from '@/components/providers/auth-provider'
 
 const font = Poppins({ subsets: ['latin'], weight: ['500'] })
 
+// TODO: update metadata
 export const metadata: Metadata = {
   title: 'snapvibe',
   description:

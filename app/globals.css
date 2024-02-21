@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Remove this below css */
 html,
 body,
 :root {

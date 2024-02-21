@@ -27,8 +27,7 @@ export default function AdminPanelLayout({
         )}
       >
         <MobileSidebar user={user} />
-        {/* TODO */}
-        {/* {children} */}
+        {children}
       </main>
     </>
   )
