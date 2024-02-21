@@ -1,7 +1,9 @@
+"use server";
+
 import prisma from "@/lib/prisma";
 import { unstable_noStore as noStore } from "next/cache";
 
-export async function getPosts() {
+export async function getPosts(pageNumber: number) {
   noStore();
 
   try {
@@ -22,6 +24,8 @@ export async function getPosts() {
       orderBy: {
         createdAt: "desc",
       },
+      skip: (pageNumber - 1) * 1,
+      take: 1,
     });
 
     return data;

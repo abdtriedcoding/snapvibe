@@ -1,17 +1,19 @@
+"use client";
+
+import Link from "next/link";
 import Image from "next/image";
-import { auth } from "@/lib/auth";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
+import Comments from "./comments";
 import Timestamp from "./timestamp";
 import PostOptions from "./post-options";
 import PostActions from "./post-actions";
+import { useSession } from "next-auth/react";
 import { PostWithExtras } from "@/lib/definitions";
-import Link from "next/link";
-import Comments from "./comments";
 
-const Post = async ({ post }: { post: PostWithExtras }) => {
-  const session = await auth();
+const Post = ({ post }: { post: PostWithExtras }) => {
+  const { data: session } = useSession();
   const userId = session?.user?.id;
   if (!userId) return;
   if (!session?.user) return null;
