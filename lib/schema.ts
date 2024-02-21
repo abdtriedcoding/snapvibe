@@ -10,6 +10,10 @@ export const formSchema = z.object({
   caption: z.string().optional(),
 })
 
+export const CommentSchema = z.object({
+  body: z.string(),
+})
+
 // TODO: remove all above below schemas
 export const PostSchema = z.object({
   id: z.string(),
@@ -20,12 +24,7 @@ export const PostSchema = z.object({
 export const CreatePost = PostSchema.omit({ id: true })
 export const UpdatePost = PostSchema
 
-export const CommentSchema = z.object({
-  id: z.string(),
-  body: z.string(),
-})
-
-export const CreateComment = CommentSchema.omit({ id: true })
+// export const CreateComment = CommentSchema.omit({ id: true })
 
 export const UserSchema = z.object({
   id: z.string(),

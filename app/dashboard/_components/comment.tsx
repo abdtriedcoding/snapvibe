@@ -1,44 +1,46 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import { useSession } from "next-auth/react";
-import { CommentWithUser } from "@/lib/definitions";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Link from 'next/link'
+import { type User } from '@prisma/client'
+import { type CommentWithUser } from '@/lib/definitions'
+import Timestamp from '@/app/dashboard/(home)/_components/timestamp'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import CommentOptions from './comment-options'
 
-import CommentOptions from "./comment-options";
-import Timestamp from "../(home)/_components/timestamp";
-
-const Comment = ({ comment }: { comment: CommentWithUser }) => {
-  const { data: session } = useSession();
-  const username = comment.user.username;
-  const href = `/dashboard/${username}`;
+export default function Comment({
+  comment,
+  user,
+}: {
+  comment: CommentWithUser
+  user: User | null
+}) {
+  const username = comment.user.username ?? comment.user.name
 
   return (
-    <div className="group p-3 px-3.5  flex items-start space-x-2.5">
-      <Link href={href}>
+    <div className="flex items-start space-x-2.5">
+      <Link href={`/dashboard/${username}`}>
+        {/* In future need to fix this profile url and avatar fallback */}
         <Avatar className="h-6 w-6">
           <AvatarImage
-            src={comment?.user?.image ?? "https://github.com/shadcn.png"}
+            src={comment?.user?.image ?? 'https://github.com/shadcn.png'}
           />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </Link>
       <div className="space-y-1.5">
-        <div className="flex items-center space-x-1.5 leading-none text-sm">
-          <Link href={href} className="font-semibold">
+        <div className="flex items-center space-x-1.5 text-sm leading-none">
+          <Link href={`/dashboard/${username}`} className="font-semibold">
             {username}
           </Link>
           <p className="font-medium">{comment.body}</p>
         </div>
         <div className="flex h-5 items-center space-x-2.5">
           <Timestamp createdAt={comment.createdAt} />
-          {comment.userId === session?.user.id && (
+          {user && comment.userId === user?.id && (
             <CommentOptions comment={comment} />
           )}
         </div>
       </div>
     </div>
-  );
-};
-
-export default Comment;
+  )
+}

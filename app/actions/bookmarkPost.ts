@@ -1,20 +1,24 @@
-"use server";
+'use server'
 
-import prisma from "@/lib/prisma";
-import { getUserId } from "@/lib/utils";
-import { revalidatePath } from "next/cache";
+import { auth } from '@/lib/auth'
+import prisma from '@/lib/prisma'
+import { revalidatePath } from 'next/cache'
 
 export async function bookmarkPost(postId: string) {
-  const userId = await getUserId();
+  const session = await auth()
+  const userId = session?.user?.id
+  if (!userId) {
+    return Promise.reject({ error: 'User not authenticated' })
+  }
 
   const post = await prisma.post.findUnique({
     where: {
       id: postId,
     },
-  });
+  })
 
   if (!post) {
-    throw new Error("Post not found.");
+    throw new Error('Post not found.')
   }
 
   const bookmark = await prisma.savedPost.findUnique({
@@ -24,7 +28,7 @@ export async function bookmarkPost(postId: string) {
         userId,
       },
     },
-  });
+  })
 
   if (bookmark) {
     try {
@@ -35,28 +39,22 @@ export async function bookmarkPost(postId: string) {
             userId,
           },
         },
-      });
-      revalidatePath("/dashboard");
-      return { message: "Unbookmarked Post." };
+      })
     } catch (error) {
-      return {
-        message: "Failed to Unbookmark Post.",
-      };
+      throw new Error('Failed to Unbookmark post')
     }
-  }
-
-  try {
-    await prisma.savedPost.create({
-      data: {
-        postId,
-        userId,
-      },
-    });
-    revalidatePath("/dashboard");
-    return { message: "Bookmarked Post." };
-  } catch (error) {
-    return {
-      message: "Failed to Bookmark Post.",
-    };
+    revalidatePath('/dashboard')
+  } else {
+    try {
+      await prisma.savedPost.create({
+        data: {
+          postId,
+          userId,
+        },
+      })
+    } catch (error) {
+      throw new Error('Failed to bookmark post')
+    }
+    revalidatePath('/dashboard')
   }
 }
