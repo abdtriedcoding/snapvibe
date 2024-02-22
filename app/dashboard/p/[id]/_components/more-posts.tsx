@@ -5,9 +5,8 @@ import { fetchPostsByUsername } from '@/app/actions/fetchPostByUsername'
 
 export default async function MorePosts({ postId }: { postId: string }) {
   const post = await fetchPostById(postId)
-  const postUsername = post?.user.username ?? post?.user.name
-  // need to fix this ts! typo
-  const posts = await fetchPostsByUsername(postUsername!, postId)
+  const postUsername = post?.user.username
+  const posts = await fetchPostsByUsername(postUsername ?? '', postId)
 
   return (
     <div className="mx-auto flex max-w-3xl flex-col space-y-3 pb-20 lg:max-w-4xl">

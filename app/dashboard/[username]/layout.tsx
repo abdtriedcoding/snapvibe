@@ -87,7 +87,11 @@ export default async function ProfileLayout({
             </div>
           </div>
         </div>
-        {/* <ProfileTabs profile={profile} isCurrentUser={isCurrentUser} /> */}
+
+        <ProfileTabs
+          username={profile.username}
+          isCurrentUser={isCurrentUser}
+        />
         {children}
       </div>
     </>

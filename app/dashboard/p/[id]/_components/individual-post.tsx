@@ -19,11 +19,11 @@ import PostOptions from '@/app/dashboard/(home)/_components/post-options'
 import PostActions from '@/app/dashboard/(home)/_components/post-actions'
 
 export default async function IndividualPost({ id }: { id: string }) {
-  const post = await fetchPostById(id)
   const session = await auth()
   const user = session?.user
-  const postUsername = post?.user.username ?? post?.user.name
   const userId = user?.id
+  const post = await fetchPostById(id)
+  const postUsername = post?.user.username
 
   if (!post) {
     notFound()
@@ -31,7 +31,11 @@ export default async function IndividualPost({ id }: { id: string }) {
 
   return (
     <>
-      <Card className="mx-auto hidden max-w-3xl md:flex lg:max-w-4xl">
+      <div className="block md:hidden">
+        <Post post={post} />
+      </div>
+
+      <Card className="mx-auto hidden w-full max-w-3xl md:flex lg:max-w-4xl">
         <div className="relative h-[450px] w-full max-w-sm overflow-hidden lg:max-w-lg">
           <Image
             src={post.fileUrl}
@@ -41,7 +45,7 @@ export default async function IndividualPost({ id }: { id: string }) {
           />
         </div>
 
-        <div className="flex max-w-sm flex-1 flex-col">
+        <div className="flex flex-1 flex-col">
           <div className="flex items-center justify-between border-b px-5 py-3">
             <HoverCard>
               <HoverCardTrigger asChild>
@@ -77,7 +81,7 @@ export default async function IndividualPost({ id }: { id: string }) {
             />
           </div>
 
-          <ScrollArea className="hidden h-[250px] py-1.5 md:inline">
+          <ScrollArea className="h-[250px] py-1.5">
             <MiniPost post={post} user={user} />
             {post.comments.length > 0 && (
               <div className="space-y-4 p-3">
@@ -89,7 +93,7 @@ export default async function IndividualPost({ id }: { id: string }) {
           </ScrollArea>
 
           {post.comments.length === 0 && (
-            <div className="flex -mt-10 flex-col items-center justify-center gap-1.5">
+            <div className="-mt-10 flex flex-col items-center justify-center gap-1.5">
               <p className="text-xl font-extrabold lg:text-2xl">
                 No comments yet.
               </p>
@@ -97,7 +101,7 @@ export default async function IndividualPost({ id }: { id: string }) {
             </div>
           )}
 
-          <div className="mt-auto hidden border-y p-2.5 md:block">
+          <div className="mt-auto border-y p-2.5">
             <PostActions post={post} userId={userId} />
             <time className="text-[11px] font-medium uppercase text-zinc-500">
               {new Date(post.createdAt).toLocaleDateString('en-US', {
@@ -110,10 +114,6 @@ export default async function IndividualPost({ id }: { id: string }) {
           <CommentForm postId={id} user={user} />
         </div>
       </Card>
-
-      <div className="md:hidden">
-        <Post post={post} />
-      </div>
     </>
   )
 }

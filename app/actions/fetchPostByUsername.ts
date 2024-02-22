@@ -5,9 +5,7 @@ export async function fetchPostsByUsername(username: string, postId?: string) {
     const data = await prisma.post.findMany({
       where: {
         user: {
-          // TODO: need to fix this
-          // username,
-          name: username,
+          username,
         },
         NOT: {
           id: postId,
