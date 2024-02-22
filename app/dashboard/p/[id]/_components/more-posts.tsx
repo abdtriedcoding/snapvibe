@@ -1,20 +1,21 @@
-import Link from "next/link";
-import PostsGrid from "./post-grid";
-import { fetchPostById } from "@/app/actions/fetchPostById";
-import { fetchPostsByUsername } from "@/app/actions/fetchPostByUsername";
+import Link from 'next/link'
+import PostsGrid from './post-grid'
+import { fetchPostById } from '@/app/actions/fetchPostById'
+import { fetchPostsByUsername } from '@/app/actions/fetchPostByUsername'
 
-const MorePosts = async ({ postId }: { postId: string }) => {
-  const post = await fetchPostById(postId);
-  const postUsername = post?.user.username;
-  const posts = await fetchPostsByUsername(postUsername!, postId);
+export default async function MorePosts({ postId }: { postId: string }) {
+  const post = await fetchPostById(postId)
+  const postUsername = post?.user.username ?? post?.user.name
+  // need to fix this ts! typo
+  const posts = await fetchPostsByUsername(postUsername!, postId)
 
   return (
-    <div className="flex flex-col space-y-3 max-w-3xl lg:max-w-4xl mx-auto pb-20">
-      <p className="font-semibold text-sm text-neutral-600 dark:text-neutral-400">
-        More posts from{" "}
+    <div className="mx-auto flex max-w-3xl flex-col space-y-3 pb-20 lg:max-w-4xl">
+      <p className="text-sm font-semibold text-neutral-600 dark:text-neutral-400">
+        More posts from{' '}
         <Link
           href={`/dashboard/${postUsername}`}
-          className="dark:text-white text-black hover:opacity-50"
+          className="text-black hover:opacity-50 dark:text-white"
         >
           {postUsername}
         </Link>
@@ -22,7 +23,5 @@ const MorePosts = async ({ postId }: { postId: string }) => {
 
       <PostsGrid posts={posts} />
     </div>
-  );
-};
-
-export default MorePosts;
+  )
+}

@@ -4,9 +4,8 @@ import {
   MorePostsSkelton,
   SinglePostSkeleton,
 } from '@/components/loading-skeletons'
-
-import IndividualPost from './_components/individual-post'
 import MorePosts from './_components/more-posts'
+import IndividualPost from './_components/individual-post'
 
 export default function PostPage({
   params: { id },
@@ -21,10 +20,9 @@ export default function PostPage({
 
       <Separator className="mx-auto my-12 max-w-3xl lg:max-w-4xl" />
 
-      {/* TODO: next need to refactor this component */}
-      {/* <Suspense fallback={<MorePostsSkelton />}>
-              <MorePosts postId={id} />
-            </Suspense> */}
+      <Suspense fallback={<MorePostsSkelton />}>
+        <MorePosts postId={id} />
+      </Suspense>
     </>
   )
 }
