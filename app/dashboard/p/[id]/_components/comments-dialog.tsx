@@ -1,5 +1,5 @@
 import useMount from '@/hook/useMount'
-import { type User } from '@prisma/client'
+import { type User } from 'next-auth'
 import { type CommentWithUser } from '@/lib/definitions'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import Comment from '@/app/dashboard/_components/comment'
@@ -14,7 +14,7 @@ import {
 interface ModalProps {
   children: React.ReactNode
   comments: CommentWithUser[]
-  user: User | null
+  user: User | undefined
 }
 
 export default function CommentsDialog({

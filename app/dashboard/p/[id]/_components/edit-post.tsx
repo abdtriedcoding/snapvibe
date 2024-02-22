@@ -1,11 +1,24 @@
-"use client";
+'use client'
 
+import { type z } from 'zod'
+import { toast } from 'sonner'
+import Image from 'next/image'
+import useMount from '@/hook/useMount'
+import { type Post } from '@prisma/client'
+import { formSchema } from '@/lib/schema'
+import { useForm } from 'react-hook-form'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { updatePost } from '@/app/actions/updatePost'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { usePathname, useRouter } from 'next/navigation'
+import { AspectRatio } from '@/components/ui/aspect-ratio'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog'
 import {
   Form,
   FormControl,
@@ -13,39 +26,34 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
+} from '@/components/ui/form'
 
-import { z } from "zod";
-import Image from "next/image";
-import { toast } from "sonner";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname, useRouter } from "next/navigation";
+export default function EditPost({ id, post }: { id: string; post: Post }) {
+  const mount = useMount()
+  const router = useRouter()
+  const pathname = usePathname()
+  const isEditPage = pathname === `/dashboard/p/${id}/edit`
 
-import useMount from "@/hook/useMount";
-import { Post } from "@prisma/client";
-import { UpdatePost } from "@/lib/schema";
-import { updatePost } from "@/app/actions/updatePost";
-
-const EditPost = ({ id, post }: { id: string; post: Post }) => {
-  const mount = useMount();
-  const pathname = usePathname();
-  const isEditPage = pathname === `/dashboard/p/${id}/edit`;
-  const router = useRouter();
-  const form = useForm<z.infer<typeof UpdatePost>>({
-    resolver: zodResolver(UpdatePost),
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
-      id: post.id,
-      caption: post.caption || "",
+      caption: post.caption ?? '',
       fileUrl: post.fileUrl,
     },
-  });
-  const fileUrl = form.watch("fileUrl");
+  })
 
-  if (!mount) return null;
+  const fileUrl = form.watch('fileUrl')
+  if (!mount) return null
+  const { isSubmitting, isValid } = form.formState
+
+  // TODO: in every form submission add loading state
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+    toast.promise(updatePost(id, data), {
+      loading: 'Updating post...',
+      success: 'Post updated successfully',
+      error: 'Failed to update post',
+    })
+  }
 
   return (
     <Dialog open={isEditPage} onOpenChange={(open) => !open && router.back()}>
@@ -55,16 +63,8 @@ const EditPost = ({ id, post }: { id: string; post: Post }) => {
         </DialogHeader>
 
         <Form {...form}>
-          <form
-            className="space-y-4"
-            onSubmit={form.handleSubmit(async (values) => {
-              const res = await updatePost(values);
-              if (res) {
-                return toast.error(res.message);
-              }
-            })}
-          >
-            <div className="h-96 md:h-[250px] overflow-hidden rounded-md">
+          <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="h-96 overflow-hidden rounded-md md:h-[250px]">
               <AspectRatio ratio={1 / 1} className="relative h-full">
                 <Image
                   src={fileUrl}
@@ -94,14 +94,12 @@ const EditPost = ({ id, post }: { id: string; post: Post }) => {
               )}
             />
 
-            <Button type="submit" disabled={form.formState.isSubmitting}>
-              Done
+            <Button disabled={!isValid || isSubmitting} type="submit">
+              Save
             </Button>
           </form>
         </Form>
       </DialogContent>
     </Dialog>
-  );
-};
-
-export default EditPost;
+  )
+}

@@ -1,7 +1,5 @@
-import { EditPostSkeleton } from "@/components/loading-skeletons";
+import { EditPostSkeleton } from '@/components/loading-skeletons'
 
-const Loading = () => {
-  return <EditPostSkeleton />;
-};
-
-export default Loading;
+export default function Loading() {
+  return <EditPostSkeleton />
+}
