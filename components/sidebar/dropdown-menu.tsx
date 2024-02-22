@@ -24,8 +24,10 @@ import { Switch } from "@/components/ui/switch";
 import { Button } from "../ui/button";
 import { signOut } from "next-auth/react";
 import { useTheme } from "next-themes";
+import { useRouter } from "next/navigation";
 
 const DropdownMenuSection = () => {
+  const router = useRouter();
   const { theme, setTheme } = useTheme();
 
   return (
@@ -59,11 +61,10 @@ const DropdownMenuSection = () => {
             <Sun size={20} className="ml-auto" />
           )}
         </DropdownMenuItem>
-        <DropdownMenuItem className="!cursor-pointer flex items-center gap-x-2 !px-4 !py-3.5 !m-1.5 !rounded-lg font-medium">
-          <Activity className="w-5 h-5" />
-          <p>Your activity</p>
-        </DropdownMenuItem>
-        <DropdownMenuItem className="!cursor-pointer flex items-center gap-x-2 !px-4 !py-3.5 !m-1.5 !rounded-lg font-medium">
+        <DropdownMenuItem
+          onClick={() => router.push("/dashboard")}
+          className="!cursor-pointer flex items-center gap-x-2 !px-4 !py-3.5 !m-1.5 !rounded-lg font-medium"
+        >
           <Bookmark className="w-5 h-5" />
           <p>Saved</p>
         </DropdownMenuItem>
