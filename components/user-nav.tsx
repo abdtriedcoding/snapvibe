@@ -61,16 +61,13 @@ export default function UserNav({ user }: { user: User | undefined }) {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem className="hover:cursor-pointer" asChild>
-            <Link href="/dashboard" className="flex items-center">
+            <Link href="/" className="flex items-center">
               <LayoutGrid className="mr-3 h-4 w-4 text-muted-foreground" />
-              Dashboard
+              Home
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem className="hover:cursor-pointer" asChild>
-            <Link
-              href={`/dashboard/${user?.username}`}
-              className="flex items-center"
-            >
+            <Link href={`/${user?.username}`} className="flex items-center">
               <UserIcon className="mr-3 h-4 w-4 text-muted-foreground" />
               Profile
             </Link>

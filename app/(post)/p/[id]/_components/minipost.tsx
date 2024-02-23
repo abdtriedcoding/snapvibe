@@ -3,8 +3,8 @@
 import Link from 'next/link'
 import { type User } from 'next-auth'
 import { type PostWithExtras } from '@/lib/definitions'
-import Timestamp from '@/app/dashboard/(home)/_components/timestamp'
-import PostOptions from '@/app/dashboard/(home)/_components/post-options'
+import Timestamp from '@/app/(home)/_components/timestamp'
+import PostOptions from '@/app/(home)/_components/post-options'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 export default function MiniPost({
@@ -14,17 +14,18 @@ export default function MiniPost({
   post: PostWithExtras
   user: User | undefined
 }) {
-  const username = post.user.username ?? post.user.name
-  const href = `/dashboard/${username}`
+  const username = post.user.username
+  const href = `/${username}`
 
   return (
     <div className="flex items-start space-x-2.5 p-3">
       <Link href={href}>
         <Avatar className="relative h-8 w-8">
           <AvatarImage
-            src={post.user.image ?? 'https://github.com/shadcn.png'}
+            src={post.user.image ?? '/default-userimage.jpg'}
+            alt="Avatar"
           />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarFallback>{post.user.name?.charAt(0)}</AvatarFallback>
         </Avatar>
       </Link>
       <div className="space-y-1.5">
