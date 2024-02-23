@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { type User } from 'next-auth'
 import CommentOptions from './comment-options'
 import { type CommentWithUser } from '@/lib/definitions'
-import Timestamp from '@/app/(home)/_components/timestamp'
+import Timestamp from '@/app/(main)/(home)/_components/timestamp'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 export default function Comment({

@@ -11,7 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { type CommentWithUser } from '@/lib/definitions'
 import { type Comment } from '@prisma/client'
 import { createComment } from '@/app/actions/createComment'
-import CommentsDialog from '@/app/(post)/p/[id]/_components/comments-dialog'
+import CommentsDialog from '@/app/(main)/(post)/p/[id]/_components/comments-dialog'
 import {
   Form,
   FormControl,

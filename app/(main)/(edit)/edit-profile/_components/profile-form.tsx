@@ -11,7 +11,7 @@ import { type UserProfile } from '@/lib/definitions'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { updateProfile } from '@/app/actions/updateProfile'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import ProfileAvatarDialog from '@/app/(profile)/[username]/_components/profile-avatar-dialog'
+import ProfileAvatarDialog from '@/app/(main)/(profile)/[username]/_components/profile-avatar-dialog'
 import {
   Form,
   FormControl,

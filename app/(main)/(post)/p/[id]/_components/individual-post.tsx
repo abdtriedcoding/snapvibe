@@ -4,19 +4,19 @@ import MiniPost from './minipost'
 import { auth } from '@/lib/auth'
 import { notFound } from 'next/navigation'
 import { Card } from '@/components/ui/card'
-import Post from '@/app/(home)/_components/post'
+import Post from '@/app/(main)/(home)/_components/post'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import Comment from '@/app/(post)/p/[id]/_components/comment'
 import { fetchPostById } from '@/app/actions/fetchPostById'
-import PostOptions from '@/app/(home)/_components/post-options'
-import PostActions from '@/app/(home)/_components/post-actions'
-import CommentForm from '@/app/(post)/p/[id]/_components/comment-form'
+import PostOptions from '@/app/(main)/(home)/_components/post-options'
+import PostActions from '@/app/(main)/(home)/_components/post-actions'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
+import Comment from './comment'
+import CommentForm from './comment-form'
 
 export default async function IndividualPost({ id }: { id: string }) {
   const session = await auth()
