@@ -43,7 +43,7 @@ export async function bookmarkPost(postId: string) {
     } catch (error) {
       throw new Error('Failed to Unbookmark post')
     }
-    revalidatePath('/dashboard')
+    revalidatePath('/')
   } else {
     try {
       await prisma.savedPost.create({
@@ -55,6 +55,6 @@ export async function bookmarkPost(postId: string) {
     } catch (error) {
       throw new Error('Failed to bookmark post')
     }
-    revalidatePath('/dashboard')
+    revalidatePath('/')
   }
 }

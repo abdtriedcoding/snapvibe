@@ -34,6 +34,6 @@ export async function createPost(values: z.infer<typeof formSchema>) {
     return Promise.reject({ error: 'Failed to create post' })
   }
 
-  revalidatePath('/dashboard')
-  redirect('/dashboard')
+  revalidatePath('/')
+  redirect('/')
 }

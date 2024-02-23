@@ -3,6 +3,7 @@
 import prisma from "@/lib/prisma";
 import { unstable_noStore } from "next/cache";
 
+// TODO: need to use this query in future refactor of code
 export async function fetchPostComments(id: string) {
   unstable_noStore();
 

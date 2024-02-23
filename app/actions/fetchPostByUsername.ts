@@ -12,6 +12,7 @@ export async function fetchPostsByUsername(username: string, postId?: string) {
         },
       },
       include: {
+        // TODO: need to check is this entire comments table even required
         comments: {
           include: {
             user: true,
@@ -21,6 +22,7 @@ export async function fetchPostsByUsername(username: string, postId?: string) {
           },
         },
         likes: true,
+        // TODO: need to check is this entire savedBy table even required
         savedBy: true,
         user: true,
       },

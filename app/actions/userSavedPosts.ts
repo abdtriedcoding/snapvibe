@@ -2,6 +2,7 @@
 
 import prisma from '@/lib/prisma'
 
+// TODO: we can refactor this query using count function of prisma query
 export async function fetchSavedPostsByUsername(username: string) {
   try {
     const data = await prisma.savedPost.findMany({

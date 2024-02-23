@@ -31,5 +31,5 @@ export async function deletePost(id: string) {
   } catch (error) {
     return Promise.reject({ error: 'Failed to delete post' })
   }
-  revalidatePath('/dashboard')
+  revalidatePath('/')
 }

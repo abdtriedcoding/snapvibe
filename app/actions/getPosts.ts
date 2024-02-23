@@ -6,6 +6,7 @@ export async function getPosts(pageNumber: number) {
   try {
     const data = await prisma.post.findMany({
       include: {
+        // TODO: need to check is this entire comments table even required
         comments: {
           include: {
             user: true,
@@ -15,6 +16,7 @@ export async function getPosts(pageNumber: number) {
           },
         },
         likes: true,
+        // TODO: need to check is this entire savedBy table even required
         savedBy: true,
         user: true,
       },

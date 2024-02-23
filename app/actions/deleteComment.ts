@@ -31,5 +31,5 @@ export async function deleteComment(id: string) {
   } catch (error) {
     return Promise.reject({ error: 'Failed to create post' })
   }
-  revalidatePath('/dashboard')
+  revalidatePath('/')
 }

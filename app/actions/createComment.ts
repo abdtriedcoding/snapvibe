@@ -32,5 +32,5 @@ export async function createComment(postId: string, body: string) {
   } catch (error) {
     return Promise.reject({ error: 'Failed to create comment' })
   }
-  revalidatePath('/dashboard')
+  revalidatePath('/')
 }
