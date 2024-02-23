@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { type User } from '@prisma/client'
+import { type User } from 'next-auth'
 import { logout } from '@/app/actions/auth'
 import { Button } from '@/components/ui/button'
 import { LayoutGrid, LogOut, UserIcon } from 'lucide-react'
@@ -20,7 +20,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-export default function UserNav({ user }: { user: User }) {
+export default function UserNav({ user }: { user: User | undefined }) {
   return (
     <DropdownMenu>
       <TooltipProvider disableHoverableContent>

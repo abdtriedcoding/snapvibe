@@ -2,13 +2,13 @@ import Link from 'next/link'
 import Menu from './menu'
 import { cn } from '@/lib/utils'
 import { Camera } from 'lucide-react'
-import { type User } from '@prisma/client'
+import { type User } from 'next-auth'
 import { useStore } from '@/hook/use-store'
 import { Button } from '@/components/ui/button'
 import { SidebarToggle } from './sidebar-toggle'
 import { useSidebarToggle } from '@/hook/use-sidebar-toggle'
 
-export default function Sidebar({ user }: { user: User | null }) {
+export default function Sidebar({ user }: { user: User | undefined }) {
   const sidebar = useStore(useSidebarToggle, (state) => state)
   if (!sidebar) return null
 

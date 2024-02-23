@@ -2,11 +2,11 @@
 
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
-import { type User } from '@prisma/client'
+import { type User } from 'next-auth'
 import { logout } from '@/app/actions/auth'
 import { usePathname } from 'next/navigation'
 import { getMenuList } from '@/lib/menu-list'
-import { Ellipsis, LogOut } from 'lucide-react'
+import { Ellipsis, LogIn, LogOut } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import {
@@ -18,7 +18,7 @@ import {
 
 interface MenuProps {
   isOpen: boolean | undefined
-  user: User | null
+  user: User | undefined
 }
 
 export default function Menu({ isOpen, user }: MenuProps) {
@@ -89,7 +89,7 @@ export default function Menu({ isOpen, user }: MenuProps) {
               ))}
             </li>
           ))}
-          {user && (
+          {user ? (
             <li className="flex w-full grow items-end">
               <TooltipProvider disableHoverableContent>
                 <Tooltip delayDuration={100}>
@@ -114,6 +114,39 @@ export default function Menu({ isOpen, user }: MenuProps) {
                   </TooltipTrigger>
                   {isOpen === false && (
                     <TooltipContent side="right">Sign out</TooltipContent>
+                  )}
+                </Tooltip>
+              </TooltipProvider>
+            </li>
+          ) : (
+            <li className="flex w-full grow items-end">
+              <TooltipProvider disableHoverableContent>
+                <Tooltip delayDuration={100}>
+                  <TooltipTrigger asChild>
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="mt-5 h-10 w-full justify-center"
+                    >
+                      <Link href="/login">
+                        <span className={cn(isOpen === false ? '' : 'mr-4')}>
+                          <LogIn size={18} />
+                        </span>
+                        <p
+                          className={cn(
+                            'whitespace-nowrap',
+                            isOpen === false
+                              ? 'hidden opacity-0'
+                              : 'opacity-100'
+                          )}
+                        >
+                          Login
+                        </p>
+                      </Link>
+                    </Button>
+                  </TooltipTrigger>
+                  {isOpen === false && (
+                    <TooltipContent side="right">Login</TooltipContent>
                   )}
                 </Tooltip>
               </TooltipProvider>
