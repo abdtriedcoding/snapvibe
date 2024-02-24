@@ -61,7 +61,9 @@ export default function ProfileForm({
   }
 
   return (
-    <div className="mx-auto max-w-xl space-y-8 py-10 lg:p-10">
+    <div className="mx-auto max-w-xl space-y-8 py-10">
+      <h1 className="text-center text-2xl font-medium">Edit profile</h1>
+
       <div className="flex items-center gap-x-2 md:gap-x-5">
         <ProfileAvatarDialog profile={profile} userId={userId}>
           <div className="flex md:w-20 md:justify-end">

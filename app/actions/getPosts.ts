@@ -23,8 +23,8 @@ export async function getPosts(pageNumber: number) {
       orderBy: {
         createdAt: 'desc',
       },
-      skip: (pageNumber - 1) * 1,
-      take: 1,
+      skip: (pageNumber - 1) * 5,
+      take: 5,
     })
 
     return data

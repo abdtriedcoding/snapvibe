@@ -17,7 +17,10 @@ export default async function Post({ post }: { post: PostWithExtras }) {
   return (
     <div className="flex flex-col space-y-2.5">
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-3">
+        <Link
+          href={`/${user?.username}`}
+          className="flex items-center space-x-3"
+        >
           <Avatar className="relative h-8 w-8">
             <AvatarImage
               src={post.user?.image ?? '/default-userimage.jpg'}
@@ -31,7 +34,7 @@ export default async function Post({ post }: { post: PostWithExtras }) {
             </span>
             <Timestamp createdAt={post.createdAt} />
           </p>
-        </div>
+        </Link>
         <PostOptions
           postId={post.id}
           postUserId={post.userId}
@@ -39,14 +42,16 @@ export default async function Post({ post }: { post: PostWithExtras }) {
         />
       </div>
 
-      <AspectRatio ratio={16 / 9}>
-        <Image
-          src={post.fileUrl}
-          alt="Post Image"
-          fill
-          className="rounded-md object-cover"
-        />
-      </AspectRatio>
+      <Link href={`/${user?.username}`}>
+        <AspectRatio ratio={16 / 9}>
+          <Image
+            src={post.fileUrl}
+            alt="Post Image"
+            fill
+            className="rounded-md object-cover"
+          />
+        </AspectRatio>
+      </Link>
 
       <PostActions post={post} userId={userId} />
 
