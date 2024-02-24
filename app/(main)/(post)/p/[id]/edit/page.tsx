@@ -1,7 +1,12 @@
 import { auth } from '@/lib/auth'
-import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
+import { notFound, redirect } from 'next/navigation'
 import { fetchPostById } from '@/app/actions/fetchPostById'
 import EditPost from '../_components/edit-post'
+
+export const metadata: Metadata = {
+  title: 'Edit Post',
+}
 
 export default async function EditPostPage({
   params: { id },
@@ -12,9 +17,8 @@ export default async function EditPostPage({
 }) {
   const session = await auth()
   const userId = session?.user?.id
-  // TODO: need to redirect to the login page
   if (!userId) {
-    notFound()
+    redirect('/login')
   }
 
   // TODO: we can write individual better query for this
