@@ -53,7 +53,6 @@ export function constructMetadata({
       creator: '@abdtriedcoding',
     },
     icons,
-    // TODO need to replace this url after deployment
-    metadataBase: new URL('https://digitalhippo.up.railway.app'),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL!),
   }
 }
