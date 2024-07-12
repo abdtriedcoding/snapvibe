@@ -1,18 +1,30 @@
-import Sidebar from "@/components/sidebar";
+'use client'
+
+import { cn } from '@/lib/utils'
+import Sidebar from '@/components/sidebar'
+import { useStore } from '@/hook/use-store'
+import { useSidebarToggle } from '@/hook/use-sidebar-toggle'
 
 export default function DashboardLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
+  const sidebar = useStore(useSidebarToggle, (state) => state)
+
+  if (!sidebar) return null
+
   return (
-    <div className="h-full flex flex-col md:flex-row md:overflow-hidden">
-      <div className="w-20 lg:w-64 md:border-r">
-        <Sidebar />
-      </div>
-      <div className="flex-1 w-full md:overflow-y-auto p-4 max-w-7xl mx-auto">
+    <>
+      <Sidebar />
+      <main
+        className={cn(
+          'min-h-[calc(100vh_-_56px)] transition-[margin-left] duration-300 ease-in-out',
+          sidebar?.isOpen === false ? 'lg:ml-[90px]' : 'lg:ml-72'
+        )}
+      >
         {children}
-      </div>
-    </div>
-  );
+      </main>
+    </>
+  )
 }
