@@ -8,6 +8,8 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import Menu from './menu'
+import UserNav from './user-nav'
+import ModeToggle from './mode-toggle'
 
 export default function MobileSidebar() {
   return (
@@ -38,6 +40,10 @@ export default function MobileSidebar() {
             <Menu isOpen />
           </SheetContent>
         </Sheet>
+        <div className="flex flex-1 items-center justify-end space-x-2">
+          <ModeToggle />
+          <UserNav />
+        </div>
       </div>
     </header>
   )

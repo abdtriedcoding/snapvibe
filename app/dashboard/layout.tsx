@@ -25,7 +25,7 @@ export default function DashboardLayout({
         )}
       >
         <MobileSidebar />
-        {children}
+        {/* {children} */}
       </main>
     </>
   )
