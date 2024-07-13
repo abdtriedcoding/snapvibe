@@ -2,20 +2,20 @@ import Link from 'next/link'
 import Menu from './menu'
 import { cn } from '@/lib/utils'
 import { Camera } from 'lucide-react'
+import { type User } from '@prisma/client'
 import { useStore } from '@/hook/use-store'
 import { Button } from '@/components/ui/button'
 import { SidebarToggle } from './sidebar-toggle'
 import { useSidebarToggle } from '@/hook/use-sidebar-toggle'
 
-export default function Sidebar() {
+export default function Sidebar({ user }: { user: User | null }) {
   const sidebar = useStore(useSidebarToggle, (state) => state)
-
   if (!sidebar) return null
 
   return (
     <aside
       className={cn(
-        'fixed left-0 top-0 z-20 h-screen -translate-x-full transition-[width] duration-300 ease-in-out lg:translate-x-0 border-r-2',
+        'fixed left-0 top-0 z-20 h-screen -translate-x-full border-r-2 transition-[width] duration-300 ease-in-out lg:translate-x-0',
         sidebar?.isOpen === false ? 'w-[90px]' : 'w-72'
       )}
     >
@@ -43,7 +43,7 @@ export default function Sidebar() {
             </h1>
           </Link>
         </Button>
-        <Menu isOpen={sidebar?.isOpen} />
+        <Menu isOpen={sidebar?.isOpen} user={user} />
       </div>
     </aside>
   )

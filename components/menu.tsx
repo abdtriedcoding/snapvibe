@@ -2,7 +2,10 @@
 
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
+import { type User } from '@prisma/client'
+import { logout } from '@/app/actions/auth'
 import { usePathname } from 'next/navigation'
+import { getMenuList } from '@/lib/menu-list'
 import { Ellipsis, LogOut } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
@@ -12,13 +15,13 @@ import {
   TooltipContent,
   TooltipProvider,
 } from '@/components/ui/tooltip'
-import { getMenuList } from '@/lib/menu-list'
 
 interface MenuProps {
   isOpen: boolean | undefined
+  user: User | null
 }
 
-export default function Menu({ isOpen }: MenuProps) {
+export default function Menu({ isOpen, user }: MenuProps) {
   const pathname = usePathname()
   const menuList = getMenuList(pathname)
 
@@ -86,36 +89,36 @@ export default function Menu({ isOpen }: MenuProps) {
               ))}
             </li>
           ))}
-          <li className="flex w-full grow items-end">
-            <TooltipProvider disableHoverableContent>
-              <Tooltip delayDuration={100}>
-                <TooltipTrigger asChild>
-                  <Button
-                    onClick={() => {
-                      console.log('Successfully logout')
-                    }}
-                    variant="outline"
-                    className="mt-5 h-10 w-full justify-center"
-                  >
-                    <span className={cn(isOpen === false ? '' : 'mr-4')}>
-                      <LogOut size={18} />
-                    </span>
-                    <p
-                      className={cn(
-                        'whitespace-nowrap',
-                        isOpen === false ? 'hidden opacity-0' : 'opacity-100'
-                      )}
+          {user && (
+            <li className="flex w-full grow items-end">
+              <TooltipProvider disableHoverableContent>
+                <Tooltip delayDuration={100}>
+                  <TooltipTrigger asChild>
+                    <Button
+                      onClick={() => logout()}
+                      variant="outline"
+                      className="mt-5 h-10 w-full justify-center"
                     >
-                      Sign out
-                    </p>
-                  </Button>
-                </TooltipTrigger>
-                {isOpen === false && (
-                  <TooltipContent side="right">Sign out</TooltipContent>
-                )}
-              </Tooltip>
-            </TooltipProvider>
-          </li>
+                      <span className={cn(isOpen === false ? '' : 'mr-4')}>
+                        <LogOut size={18} />
+                      </span>
+                      <p
+                        className={cn(
+                          'whitespace-nowrap',
+                          isOpen === false ? 'hidden opacity-0' : 'opacity-100'
+                        )}
+                      >
+                        Sign out
+                      </p>
+                    </Button>
+                  </TooltipTrigger>
+                  {isOpen === false && (
+                    <TooltipContent side="right">Sign out</TooltipContent>
+                  )}
+                </Tooltip>
+              </TooltipProvider>
+            </li>
+          )}
         </ul>
       </nav>
     </ScrollArea>
