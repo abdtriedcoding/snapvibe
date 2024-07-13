@@ -1,26 +1,20 @@
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
-import {
-  generateUploadButton,
-  generateUploadDropzone,
-} from "@uploadthing/react";
-import { OurFileRouter } from "@/app/api/uploadthing/core";
-import { auth } from "./auth";
+import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
 
-export const UploadButton = generateUploadButton<OurFileRouter>();
-export const UploadDropzone = generateUploadDropzone<OurFileRouter>();
+import { auth } from './auth'
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+  return twMerge(clsx(inputs))
 }
 
+// Remove this outdated function
 export const getUserId = async () => {
-  const session = await auth();
-  const userId = session?.user?.id;
+  const session = await auth()
+  const userId = session?.user?.id
 
   if (!userId) {
-    throw new Error("You must be signed in to use this feature");
+    throw new Error('You must be signed in to use this feature')
   }
 
-  return userId;
-};
+  return userId
+}

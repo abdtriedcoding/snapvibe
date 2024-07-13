@@ -43,8 +43,8 @@ export function getMenuList(pathname: string): Group[] {
           icon: SquarePen,
         },
         {
-          href: '/categories',
-          label: 'Categories',
+          href: '/dashboard/create',
+          label: 'Create',
           active: pathname.includes('/categories'),
           icon: Bookmark,
         },

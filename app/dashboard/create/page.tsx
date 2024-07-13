@@ -1,133 +1,135 @@
-"use client";
+'use client'
 
-import { z } from "zod";
-import Image from "next/image";
-import useMount from "@/hook/useMount";
-import { Dialog, DialogContent, DialogHeader } from "@/components/ui/dialog";
-import { usePathname, useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Button } from "@/components/ui/button";
+import { z } from 'zod'
+import { toast } from 'sonner'
+import { X } from 'lucide-react'
+import Image from 'next/image'
+import useMount from '@/hook/useMount'
+import '@uploadthing/react/styles.css'
+import { useForm } from 'react-hook-form'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { UploadDropzone } from '@/lib/uploadthing'
+import { createPost } from '@/app/actions/createPost'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { usePathname, useRouter } from 'next/navigation'
+import { AspectRatio } from '@/components/ui/aspect-ratio'
+import { Dialog, DialogContent } from '@/components/ui/dialog'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { CreatePost } from "@/lib/schema";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { UploadDropzone } from "@/lib/utils";
-import { X } from "lucide-react";
-import { toast } from "sonner";
-import { createPost } from "@/app/actions/createPost";
+} from '@/components/ui/form'
 
-const CreatePage = () => {
-  const form = useForm<z.infer<typeof CreatePost>>({
-    resolver: zodResolver(CreatePost),
+const formSchema = z.object({
+  fileUrl: z.string().url(),
+  caption: z.string().optional(),
+})
+
+export default function CreatePage() {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
-      caption: "",
-      fileUrl: "",
+      caption: '',
+      fileUrl: '',
     },
-  });
+  })
 
-  const pathname = usePathname();
-  const router = useRouter();
-  const mount = useMount();
-  const isCreatePage = pathname === "/dashboard/create";
-  if (!mount) return null;
+  const { isSubmitting } = form.formState
 
-  const fileUrl = form.watch("fileUrl");
+  const pathname = usePathname()
+  const router = useRouter()
+  const mount = useMount()
+
+  const isCreatePage = pathname === '/dashboard/create'
+  if (!mount) return null
+
+  const fileUrl = form.watch('fileUrl')
+
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+    const res = await createPost(data)
+    if (res?.error) {
+      return toast.error(res.error)
+    } else {
+      toast.success('Post created successfully')
+    }
+  }
 
   return (
     <Dialog open={isCreatePage} onOpenChange={(open) => !open && router.back()}>
-      <DialogContent className="pt-10">
-        <DialogHeader>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(async (values) => {
-                const res = await createPost(values);
-                if (res) {
-                  return toast.error(res.message);
-                }
-                toast.success("Post Uploaded Successfully");
-              })}
-              className="space-y-4"
-            >
-              {!!fileUrl ? (
-                <div className="h-96 md:h-[450px] overflow-hidden rounded-md">
-                  <AspectRatio ratio={1 / 1} className="relative h-full">
-                    <Image
-                      src={fileUrl}
-                      alt="Post preview"
-                      fill
-                      className="rounded-md object-cover"
-                    />
-                    <X
-                      onClick={() => form.setValue("fileUrl", "")}
-                      className="absolute top-0 right-0 m-2 cursor-pointer"
-                    />
-                  </AspectRatio>
-                </div>
-              ) : (
-                <FormField
-                  control={form.control}
-                  name="fileUrl"
-                  render={() => (
-                    <FormItem>
-                      <FormLabel htmlFor="picture">Picture</FormLabel>
-                      <FormControl>
-                        <UploadDropzone
-                          endpoint="imageUploader"
-                          onClientUploadComplete={(res) => {
-                            form.setValue("fileUrl", res[0].url);
-                            toast.success("Upload complete");
-                          }}
-                          onUploadError={() => {
-                            toast.error("Upload failed");
-                          }}
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        Upload a picture to post.
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+      <DialogContent className="pt-12">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            {!!fileUrl ? (
+              <AspectRatio ratio={16 / 9}>
+                <Image
+                  src={fileUrl}
+                  alt="Post preview"
+                  fill
+                  className="rounded-md object-cover"
                 />
-              )}
-
+                <X
+                  onClick={() => form.setValue('fileUrl', '')}
+                  className="absolute right-0 top-0 m-2 cursor-pointer"
+                />
+              </AspectRatio>
+            ) : (
               <FormField
                 control={form.control}
-                name="caption"
-                render={({ field }) => (
+                name="fileUrl"
+                render={() => (
                   <FormItem>
-                    <FormLabel htmlFor="caption">Caption</FormLabel>
+                    <FormLabel htmlFor="picture">Picture</FormLabel>
                     <FormControl>
-                      <Input
-                        type="caption"
-                        id="caption"
-                        placeholder="Write a caption..."
-                        {...field}
+                      <UploadDropzone
+                        endpoint="imageUploader"
+                        onClientUploadComplete={(res) => {
+                          if (res?.[0]?.url) {
+                            form.setValue('fileUrl', res[0].url)
+                            toast.success('Upload complete')
+                          } else {
+                            toast.error('Upload failed')
+                          }
+                        }}
+                        onUploadError={() => {
+                          toast.error('Upload failed')
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+            )}
 
-              <Button type="submit" disabled={form.formState.isSubmitting}>
-                Create Post
-              </Button>
-            </form>
-          </Form>
-        </DialogHeader>
+            <FormField
+              control={form.control}
+              name="caption"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="caption">Caption</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="caption"
+                      id="caption"
+                      placeholder="Write a caption..."
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Button type="submit" disabled={isSubmitting}>
+              Create Post
+            </Button>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
-  );
-};
-
-export default CreatePage;
+  )
+}
