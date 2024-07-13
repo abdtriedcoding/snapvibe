@@ -1,12 +1,13 @@
 'use client'
 
-import { z } from 'zod'
+import { type z } from 'zod'
 import { toast } from 'sonner'
 import { X } from 'lucide-react'
 import Image from 'next/image'
 import useMount from '@/hook/useMount'
 import '@uploadthing/react/styles.css'
 import { useForm } from 'react-hook-form'
+import { formSchema } from '@/lib/schema'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { UploadDropzone } from '@/lib/uploadthing'
@@ -14,7 +15,12 @@ import { createPost } from '@/app/actions/createPost'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { usePathname, useRouter } from 'next/navigation'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
-import { Dialog, DialogContent } from '@/components/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
 import {
   Form,
   FormControl,
@@ -24,17 +30,12 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 
-const formSchema = z.object({
-  fileUrl: z.string().url(),
-  caption: z.string().optional(),
-})
-
 export default function CreatePage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       caption: '',
-      fileUrl: '',
+      fileUrl: undefined,
     },
   })
 
@@ -49,18 +50,20 @@ export default function CreatePage() {
 
   const fileUrl = form.watch('fileUrl')
 
-  async function onSubmit(data: z.infer<typeof formSchema>) {
-    const res = await createPost(data)
-    if (res?.error) {
-      return toast.error(res.error)
-    } else {
-      toast.success('Post created successfully')
-    }
+  function onSubmit(data: z.infer<typeof formSchema>) {
+    toast.promise(createPost(data), {
+      loading: 'Creating post...',
+      success: 'Post created successfully',
+      error: 'Failed to create post',
+    })
   }
 
   return (
     <Dialog open={isCreatePage} onOpenChange={(open) => !open && router.back()}>
       <DialogContent className="pt-12">
+        <DialogHeader>
+          <DialogTitle>Create new post</DialogTitle>
+        </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             {!!fileUrl ? (
@@ -89,9 +92,9 @@ export default function CreatePage() {
                         onClientUploadComplete={(res) => {
                           if (res?.[0]?.url) {
                             form.setValue('fileUrl', res[0].url)
-                            toast.success('Upload complete')
+                            toast.success('Picture upload complete')
                           } else {
-                            toast.error('Upload failed')
+                            toast.error('Picture upload failed')
                           }
                         }}
                         onUploadError={() => {
