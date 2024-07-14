@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { auth } from '@/lib/auth'
-import { Card } from '@/components/ui/card'
 import { getPosts } from '@/app/actions/getPosts'
 import { LoadMore } from './_components/load-more'
 import { type PostWithExtras } from '@/lib/definitions'
+import { AspectRatio } from '@/components/ui/aspect-ratio'
+import getCurrentUser from '@/app/actions/get-current-user'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import Comments from './_components/comments'
 import Timestamp from './_components/timestamp'
@@ -25,8 +25,8 @@ export default async function DashboardPage() {
 }
 
 async function Post({ post }: { post: PostWithExtras }) {
-  const session = await auth()
-  const userId = session?.user?.id
+  const user = await getCurrentUser()
+  const userId = user?.id
 
   return (
     <div className="flex flex-col space-y-2.5">
@@ -54,30 +54,28 @@ async function Post({ post }: { post: PostWithExtras }) {
         />
       </div>
 
-      <Card className="relative h-[450px] w-full overflow-hidden rounded-none sm:rounded-md">
+      <AspectRatio ratio={16 / 9}>
         <Image
           src={post.fileUrl}
           alt="Post Image"
           fill
-          className="object-cover sm:rounded-md"
+          className="rounded-md object-cover"
         />
-      </Card>
+      </AspectRatio>
+
       <PostActions post={post} userId={userId} />
 
       {post.caption && (
-        <div className="flex items-center space-x-2 px-3 text-sm font-medium leading-none sm:px-0">
+        <div className="flex items-center space-x-2 text-sm font-medium leading-none">
+          {/* In future need to fix this username */}
           <Link href={`/dashboard/${post.user.username}`} className="font-bold">
-            {post.user.username}
+            {post.user.username ?? post.user.name}
           </Link>
           <p>{post.caption}</p>
         </div>
       )}
 
-      <Comments
-        postId={post.id}
-        comments={post.comments}
-        user={session?.user}
-      />
+      <Comments postId={post.id} comments={post.comments} user={user} />
     </div>
   )
 }

@@ -1,20 +1,24 @@
-"use server";
+'use server'
 
-import prisma from "@/lib/prisma";
-import { getUserId } from "@/lib/utils";
-import { revalidatePath } from "next/cache";
+import prisma from '@/lib/prisma'
+import { auth } from '@/lib/auth'
+import { revalidatePath } from 'next/cache'
 
 export async function createComment(postId: string, body: string) {
-  const userId = await getUserId();
+  const session = await auth()
+  const userId = session?.user?.id
+  if (!userId) {
+    return Promise.reject({ error: 'User not authenticated' })
+  }
 
   const post = await prisma.post.findUnique({
     where: {
       id: postId,
     },
-  });
+  })
 
   if (!post) {
-    throw new Error("Post not found");
+    throw new Error('Post not found')
   }
 
   try {
@@ -24,10 +28,9 @@ export async function createComment(postId: string, body: string) {
         postId,
         userId,
       },
-    });
-    revalidatePath("/dashboard");
-    return { message: "Created Comment." };
+    })
   } catch (error) {
-    return { message: "Failed to Create Comment." };
+    throw new Error('Failed to create comment')
   }
+  revalidatePath('/dashboard')
 }

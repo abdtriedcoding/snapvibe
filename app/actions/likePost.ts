@@ -1,20 +1,24 @@
-"use server";
+'use server'
 
-import prisma from "@/lib/prisma";
-import { getUserId } from "@/lib/utils";
-import { revalidatePath } from "next/cache";
+import prisma from '@/lib/prisma'
+import { auth } from '@/lib/auth'
+import { revalidatePath } from 'next/cache'
 
 export async function likePost(postId: string) {
-  const userId = await getUserId();
+  const session = await auth()
+  const userId = session?.user?.id
+  if (!userId) {
+    return Promise.reject({ error: 'User not authenticated' })
+  }
 
   const post = await prisma.post.findUnique({
     where: {
       id: postId,
     },
-  });
+  })
 
   if (!post) {
-    throw new Error("Post not found");
+    throw new Error('Post not found')
   }
 
   const like = await prisma.like.findUnique({
@@ -24,7 +28,7 @@ export async function likePost(postId: string) {
         userId,
       },
     },
-  });
+  })
 
   if (like) {
     try {
@@ -35,24 +39,22 @@ export async function likePost(postId: string) {
             userId,
           },
         },
-      });
-      revalidatePath("/dashboard");
-      return { message: "Unliked Post." };
+      })
     } catch (error) {
-      return { message: "Failed to Unlike Post." };
+      throw new Error('Failed to unlike post')
     }
-  }
-
-  try {
-    await prisma.like.create({
-      data: {
-        postId,
-        userId,
-      },
-    });
-    revalidatePath("/dashboard");
-    return { message: "Liked Post." };
-  } catch (error) {
-    return { message: "Database Error: Failed to Like Post." };
+    revalidatePath('/dashboard')
+  } else {
+    try {
+      await prisma.like.create({
+        data: {
+          postId,
+          userId,
+        },
+      })
+    } catch (error) {
+      throw new Error('Failed to like post')
+    }
+    revalidatePath('/dashboard')
   }
 }

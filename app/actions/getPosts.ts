@@ -27,6 +27,6 @@ export async function getPosts(pageNumber: number) {
 
     return data
   } catch (error) {
-    throw new Error('Failed to fetch posts')
+    throw new Error('Failed to get posts')
   }
 }
