@@ -1,11 +1,8 @@
-"use server";
+'use server'
 
-import prisma from "@/lib/prisma";
-import { unstable_noStore as noStore } from "next/cache";
+import prisma from '@/lib/prisma'
 
 export async function getPosts(pageNumber: number) {
-  noStore();
-
   try {
     const data = await prisma.post.findMany({
       include: {
@@ -14,7 +11,7 @@ export async function getPosts(pageNumber: number) {
             user: true,
           },
           orderBy: {
-            createdAt: "desc",
+            createdAt: 'desc',
           },
         },
         likes: true,
@@ -22,15 +19,14 @@ export async function getPosts(pageNumber: number) {
         user: true,
       },
       orderBy: {
-        createdAt: "desc",
+        createdAt: 'desc',
       },
       skip: (pageNumber - 1) * 1,
       take: 1,
-    });
+    })
 
-    return data;
+    return data
   } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to fetch posts");
+    throw new Error('Failed to fetch posts')
   }
 }

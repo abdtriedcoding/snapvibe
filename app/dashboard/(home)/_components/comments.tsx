@@ -27,7 +27,7 @@ function Comments({
 }: {
   postId: string;
   comments: CommentWithUser[];
-  user: User | null;
+  user: User | undefined;
 }) {
   const form = useForm<z.infer<typeof CreateComment>>({
     resolver: zodResolver(CreateComment),

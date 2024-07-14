@@ -14,7 +14,7 @@ const PostActions = ({
   className,
 }: {
   post: PostWithExtras;
-  userId: string;
+  userId: string | undefined;
   className?: string;
 }) => {
   return (
