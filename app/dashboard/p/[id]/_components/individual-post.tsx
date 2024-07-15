@@ -77,24 +77,24 @@ export default async function IndividualPost({ id }: { id: string }) {
             />
           </div>
 
-          {post.comments.length === 0 && (
-            <div className="flex flex-1 flex-col items-center justify-center gap-1.5">
-              <p className="text-xl font-extrabold lg:text-2xl">
-                No comments yet.
-              </p>
-              <p className="text-sm font-medium">Start the conversation.</p>
-            </div>
-          )}
-
-          {post.comments.length > 0 && (
-            <ScrollArea className="hidden h-[250px] py-1.5 md:inline">
-              <MiniPost post={post} user={user} />
+          <ScrollArea className="hidden h-[250px] py-1.5 md:inline">
+            <MiniPost post={post} user={user} />
+            {post.comments.length > 0 && (
               <div className="space-y-4 p-3">
                 {post.comments.map((comment) => (
                   <Comment key={comment.id} comment={comment} user={user} />
                 ))}
               </div>
-            </ScrollArea>
+            )}
+          </ScrollArea>
+
+          {post.comments.length === 0 && (
+            <div className="flex -mt-10 flex-col items-center justify-center gap-1.5">
+              <p className="text-xl font-extrabold lg:text-2xl">
+                No comments yet.
+              </p>
+              <p className="text-sm font-medium">Start the conversation.</p>
+            </div>
           )}
 
           <div className="mt-auto hidden border-y p-2.5 md:block">
