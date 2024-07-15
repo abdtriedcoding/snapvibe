@@ -6,10 +6,15 @@ import { PrismaAdapter } from '@auth/prisma-adapter'
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [Google],
-  session: {
-    strategy: 'jwt',
-  },
   callbacks: {
+    async session({ session, token }) {
+      if (token) {
+        session.user.username = token.username as string
+      }
+
+      return session
+    },
+
     async jwt({ token }) {
       const prismaUser = await prisma.user.findFirst({
         where: {
@@ -33,20 +38,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
 
       return {
-        id: prismaUser.id,
-        name: prismaUser.name,
-        email: prismaUser.email,
         username: prismaUser.username,
-        picture: prismaUser.image,
+        ...token,
       }
-    },
-
-    async session({ session, token }) {
-      if (token) {
-        session.user.username = token.username as string
-      }
-
-      return session
     },
   },
   pages: {
