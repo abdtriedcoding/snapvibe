@@ -61,7 +61,7 @@ export default function Comments({
   }
 
   return (
-    <div className="space-y-0.5 px-3 sm:px-0">
+    <div className="space-y-0.5">
       {commentsCount > 1 && (
         <CommentsDialog comments={comments} user={user}>
           <p className="w-fit cursor-pointer text-sm font-medium text-neutral-500">
