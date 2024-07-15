@@ -1,21 +1,27 @@
-import { notFound } from "next/navigation";
-import EditPost from "../_components/edit-post";
-import { fetchPostById } from "@/app/actions/fetchPostById";
+import { auth } from '@/lib/auth'
+import { notFound } from 'next/navigation'
+import { fetchPostById } from '@/app/actions/fetchPostById'
+import EditPost from '../_components/edit-post'
 
 type Props = {
   params: {
-    id: string;
-  };
-};
+    id: string
+  }
+}
 
-const EditPostPage = async ({ params: { id } }: Props) => {
-  const post = await fetchPostById(id);
-
-  if (!post) {
-    notFound();
+export default async function EditPostPage({ params: { id } }: Props) {
+  const session = await auth()
+  const userId = session?.user?.id
+  if (!userId) {
+    notFound()
   }
 
-  return <EditPost id={id} post={post} />;
-};
+  const post = await fetchPostById(id)
+  const isPostOwner = userId === post?.userId
 
-export default EditPostPage;
+  if (!post || !isPostOwner) {
+    notFound()
+  }
+
+  return <EditPost id={id} post={post} />
+}

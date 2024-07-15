@@ -1,36 +1,39 @@
-"use server";
+'use server'
 
-import { z } from "zod";
-import prisma from "@/lib/prisma";
-import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import { type z } from 'zod'
+import prisma from '@/lib/prisma'
+import { auth } from '@/lib/auth'
+import { formSchema } from '@/lib/schema'
+import { redirect } from 'next/navigation'
+import { revalidatePath } from 'next/cache'
 
-import { getUserId } from "@/lib/utils";
-import { UpdatePost } from "@/lib/schema";
-
-export async function updatePost(values: z.infer<typeof UpdatePost>) {
-  const userId = await getUserId();
-
-  const validatedFields = UpdatePost.safeParse(values);
-
-  if (!validatedFields.success) {
-    return {
-      errors: validatedFields.error.flatten().fieldErrors,
-      message: "Missing Fields. Failed to Update Post.",
-    };
+export async function updatePost(
+  id: string,
+  values: z.infer<typeof formSchema>
+) {
+  const session = await auth()
+  const userId = session?.user?.id
+  if (!userId) {
+    return Promise.reject({ error: 'User not authenticated' })
   }
 
-  const { id, fileUrl, caption } = validatedFields.data;
+  const validatedFields = formSchema.safeParse(values)
+
+  if (!validatedFields.success) {
+    return Promise.reject({ error: 'Missing Fields. Failed to update post' })
+  }
+
+  const { fileUrl, caption } = validatedFields.data
 
   const post = await prisma.post.findUnique({
     where: {
       id,
       userId,
     },
-  });
+  })
 
   if (!post) {
-    throw new Error("Post not found");
+    throw new Error('Post not found')
   }
 
   try {
@@ -42,11 +45,11 @@ export async function updatePost(values: z.infer<typeof UpdatePost>) {
         fileUrl,
         caption,
       },
-    });
+    })
   } catch (error) {
-    return { message: "Failed to Update Post." };
+    return Promise.reject({ error: 'Failed to update post' })
   }
 
-  revalidatePath("/dashboard");
-  redirect("/dashboard");
+  revalidatePath('/dashboard')
+  redirect('/dashboard')
 }

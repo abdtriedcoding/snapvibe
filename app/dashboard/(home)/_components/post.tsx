@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { auth } from '@/lib/auth'
 import { type PostWithExtras } from '@/lib/definitions'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
-import getCurrentUser from '@/app/actions/get-current-user'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import Comments from './comments'
 import Timestamp from './timestamp'
@@ -10,7 +10,8 @@ import PostActions from './post-actions'
 import PostOptions from './post-options'
 
 export default async function Post({ post }: { post: PostWithExtras }) {
-  const user = await getCurrentUser()
+  const session = await auth()
+  const user = session?.user
   const userId = user?.id
 
   return (

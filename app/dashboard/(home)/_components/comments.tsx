@@ -2,12 +2,14 @@
 
 import Link from 'next/link'
 import { type z } from 'zod'
+import { toast } from 'sonner'
+import { type User } from 'next-auth'
 import { useOptimistic } from 'react'
 import { useForm } from 'react-hook-form'
 import { CommentSchema } from '@/lib/schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { type CommentWithUser } from '@/lib/definitions'
-import { type Comment, type User } from '@prisma/client'
+import { type Comment } from '@prisma/client'
 import { createComment } from '@/app/actions/createComment'
 import CommentsDialog from '@/app/dashboard/p/[id]/_components/comments-dialog'
 import {
@@ -17,7 +19,6 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form'
-import { toast } from 'sonner'
 
 export default function Comments({
   postId,
@@ -26,7 +27,7 @@ export default function Comments({
 }: {
   postId: string
   comments: CommentWithUser[]
-  user: User | null
+  user: User | undefined
 }) {
   const form = useForm<z.infer<typeof CommentSchema>>({
     resolver: zodResolver(CommentSchema),
