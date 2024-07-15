@@ -1,68 +1,67 @@
-import Link from "next/link";
-import { auth } from "@/lib/auth";
-import { notFound } from "next/navigation";
-import type { Metadata, ResolvingMetadata } from "next";
-import { fetchProfile } from "@/app/actions/fetchUserProfile";
-
-import ProfileTabs from "./_components/profile-tab";
-import { buttonVariants } from "@/components/ui/button";
-import ProfileAvatarDialog from "./_components/profile-avatar-dialog";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import Link from 'next/link'
+import { auth } from '@/lib/auth'
+import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import ProfileTabs from './_components/profile-tab'
+import { buttonVariants } from '@/components/ui/button'
+import { fetchProfile } from '@/app/actions/fetchUserProfile'
+import ProfileAvatarDialog from './_components/profile-avatar-dialog'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 type Props = {
   params: {
-    username: string;
-  };
-  children: React.ReactNode;
-};
-
-export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
-  const username = params.username;
-
-  const profile = await fetchProfile(username);
-
-  return {
-    title: `${profile?.name} (@${profile?.username})`,
-  };
+    username: string
+  }
+  children: React.ReactNode
 }
 
-async function ProfileLayout({ children, params: { username } }: Props) {
-  const session = await auth();
-  const profile = await fetchProfile(username);
-  const isCurrentUser = session?.user.id === profile?.id;
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const username = params.username
+  const profile = await fetchProfile(username)
+  return {
+    title: `${profile?.name} (@${profile?.username})`,
+  }
+}
+
+export default async function ProfileLayout({
+  children,
+  params: { username },
+}: Props) {
+  const session = await auth()
+  const userId = session?.user?.id
+  const profile = await fetchProfile(username)
+  const isCurrentUser = userId === profile?.id
 
   if (!profile) {
-    notFound();
+    notFound()
   }
 
   return (
     <>
-      <div className="max-w-4xl mx-auto">
-        <div className="flex flex-col items-center md:flex-row md:items-start gap-4 md:gap-10 px-4">
-          <ProfileAvatarDialog user={profile}>
-            <Avatar className="w-24 h-24 md:w-36 md:h-36 cursor-pointer">
+      <div className="mx-auto max-w-4xl">
+        <div className="flex flex-col items-center gap-4 px-4 md:flex-row md:items-start md:gap-10">
+          <ProfileAvatarDialog profile={profile} userId={userId}>
+            <Avatar className="h-24 w-24 cursor-pointer md:h-36 md:w-36">
               <AvatarImage
-                src={profile.image ?? "https://github.com/shadcn.png"}
+                // TODO: update this default image
+                src={profile.image ?? 'https://github.com/shadcn.png'}
               />
-              <AvatarFallback>CN</AvatarFallback>
+              <AvatarFallback>{profile.name?.charAt(0)}</AvatarFallback>
             </Avatar>
           </ProfileAvatarDialog>
 
-          <div className="flex flex-col flex-grow">
-            <div className="flex space-x-3 items-center justify-center md:justify-between w-full mb-4">
-              <h1 className="font-semibold text-2xl md:text-3xl text-center md:text-left">
+          <div className="flex flex-grow flex-col">
+            <div className="mb-4 flex w-full items-center justify-center space-x-3 md:justify-between">
+              <h1 className="text-center text-2xl font-semibold md:text-left md:text-3xl">
                 {profile.username}
               </h1>
               {isCurrentUser && (
                 <Link
                   href={`/dashboard/edit-profile`}
                   className={buttonVariants({
-                    className: "!font-bold",
-                    variant: "secondary",
-                    size: "sm",
+                    className: '!font-bold',
+                    variant: 'secondary',
+                    size: 'sm',
                   })}
                 >
                   Edit Profile
@@ -70,27 +69,27 @@ async function ProfileLayout({ children, params: { username } }: Props) {
               )}
             </div>
 
-            <div className="flex items-center justify-center md:justify-start w-full mb-4">
+            <div className="mb-4 flex w-full items-center justify-center md:justify-start">
               <p className="font-medium">
-                <span className="font-semibold">{profile.posts.length}</span>{" "}
+                <span className="font-semibold">{profile.posts.length}</span>{' '}
                 posts
               </p>
             </div>
 
-            <div className="text-sm text-center md:text-left">
+            <div className="text-center text-sm md:text-left">
               <p className="font-semibold">{profile.name}</p>
-              <p className="text-gray-600">{profile.bio}</p>
-              <Link target="_blank" href={`${profile.website}`}>
-                <p className="pt-1 text-blue-500">{profile.website}</p>
-              </Link>
+              {profile.bio && <p className="text-gray-600">{profile.bio}</p>}
+              {profile.website && (
+                <Link target="_blank" href={`${profile.website}`}>
+                  <p className="pt-1 text-blue-500">{profile.website}</p>
+                </Link>
+              )}
             </div>
           </div>
         </div>
-        <ProfileTabs profile={profile} isCurrentUser={isCurrentUser} />
+        {/* <ProfileTabs profile={profile} isCurrentUser={isCurrentUser} /> */}
         {children}
       </div>
     </>
-  );
+  )
 }
-
-export default ProfileLayout;

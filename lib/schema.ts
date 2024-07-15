@@ -14,9 +14,7 @@ export const CommentSchema = z.object({
   body: z.string().trim().min(1),
 })
 
-// TODO: remove all above below schemas
 export const UserSchema = z.object({
-  id: z.string(),
   username: z.string().optional(),
   name: z.string().optional(),
   image: z.string().optional(),
@@ -24,5 +22,3 @@ export const UserSchema = z.object({
   website: z.string().optional(),
   gender: z.string().optional(),
 })
-
-export const UpdateUser = UserSchema

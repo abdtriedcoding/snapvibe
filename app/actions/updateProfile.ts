@@ -1,24 +1,25 @@
-"use server";
+'use server'
 
-import { z } from "zod";
-import prisma from "@/lib/prisma";
-import { UpdateUser } from "@/lib/schema";
-import { getUserId } from "@/lib/utils";
-import { revalidatePath } from "next/cache";
+import { type z } from 'zod'
+import prisma from '@/lib/prisma'
+import { auth } from '@/lib/auth'
+import { UserSchema } from '@/lib/schema'
+import { revalidatePath } from 'next/cache'
 
-export async function updateProfile(values: z.infer<typeof UpdateUser>) {
-  const userId = await getUserId();
-
-  const validatedFields = UpdateUser.safeParse(values);
-
-  if (!validatedFields.success) {
-    return {
-      errors: validatedFields.error.flatten().fieldErrors,
-      message: "Missing Fields. Failed to Update Profile.",
-    };
+export async function updateProfile(values: z.infer<typeof UserSchema>) {
+  const session = await auth()
+  const userId = session?.user?.id
+  if (!userId) {
+    return Promise.reject({ error: 'User not authenticated' })
   }
 
-  const { bio, gender, image, name, username, website } = validatedFields.data;
+  const validatedFields = UserSchema.safeParse(values)
+
+  if (!validatedFields.success) {
+    return Promise.reject({ error: 'Missing Fields. Failed to Create Post.' })
+  }
+
+  const { bio, gender, image, name, username, website } = validatedFields.data
 
   try {
     await prisma.user.update({
@@ -33,10 +34,9 @@ export async function updateProfile(values: z.infer<typeof UpdateUser>) {
         gender,
         website,
       },
-    });
-    revalidatePath("/dashboard");
-    return { message: "Updated Profile." };
+    })
   } catch (error) {
-    return { message: "Failed to Update Profile." };
+    return Promise.reject({ error: 'Failed to update profile' })
   }
+  revalidatePath('/dashboard')
 }

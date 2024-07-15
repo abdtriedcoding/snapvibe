@@ -6,9 +6,10 @@ const ProfilePage = async ({
 }: {
   params: { username: string };
 }) => {
-  const posts = await fetchPostsByUsername(username);
+  // const posts = await fetchPostsByUsername(username);
 
-  return <PostsGrid posts={posts} />;
+  // return <PostsGrid posts={posts} />;
+  return <>Page</>
 };
 
 export default ProfilePage;

@@ -1,11 +1,8 @@
-"use server";
+'use server'
 
-import prisma from "@/lib/prisma";
-import { unstable_noStore } from "next/cache";
+import prisma from '@/lib/prisma'
 
 export async function fetchProfile(username: string) {
-  unstable_noStore();
-
   try {
     const data = await prisma.user.findUnique({
       where: {
@@ -14,20 +11,19 @@ export async function fetchProfile(username: string) {
       include: {
         posts: {
           orderBy: {
-            createdAt: "desc",
+            createdAt: 'desc',
           },
         },
         saved: {
           orderBy: {
-            createdAt: "desc",
+            createdAt: 'desc',
           },
         },
       },
-    });
+    })
 
-    return data;
+    return data
   } catch (error) {
-    console.error("Database Error:", error);
-    throw new Error("Failed to fetch profile");
+    throw new Error('Failed to fetch profile')
   }
 }
