@@ -3,7 +3,6 @@
 import { type z } from 'zod'
 import { toast } from 'sonner'
 import useMount from '@/hook/useMount'
-import '@uploadthing/react/styles.css'
 import { useRef, useState } from 'react'
 import { UserSchema } from '@/lib/schema'
 import { useForm } from 'react-hook-form'
@@ -87,7 +86,7 @@ export default function ProfileAvatarDialog({
                   <FormItem>
                     <FormControl>
                       <UploadButton
-                        className="border-b border-zinc-300 pb-1 text-sm dark:border-neutral-700"
+                        className="ut-button:bg-transparent ut-button:text-blue-500 ut-button:font-bold ut-allowed-content:hidden ut-button:ring-0 ut-button:focus-visible:ring-0 ut-button:ring-offset-0 ut-button:w-full h-11 border-y border-zinc-300 text-sm dark:border-neutral-700"
                         endpoint="imageUploader"
                         onClientUploadComplete={(res) => {
                           if (res?.[0]?.url) {

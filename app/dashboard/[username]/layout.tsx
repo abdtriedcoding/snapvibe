@@ -41,7 +41,7 @@ export default async function ProfileLayout({
       <div className="mx-auto max-w-4xl">
         <div className="flex flex-col items-center gap-4 px-4 md:flex-row md:items-start md:gap-10">
           <ProfileAvatarDialog profile={profile} userId={userId}>
-            <Avatar className="h-24 w-24 cursor-pointer md:h-36 md:w-36">
+            <Avatar className="h-24 w-24 cursor-pointer md:h-32 md:w-32">
               <AvatarImage
                 // TODO: update this default image
                 src={profile.image ?? 'https://github.com/shadcn.png'}
