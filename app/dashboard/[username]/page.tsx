@@ -1,15 +1,11 @@
-import PostsGrid from "../p/[id]/_components/post-grid";
-import { fetchPostsByUsername } from "@/app/actions/fetchPostByUsername";
+import PostsGrid from '@/app/dashboard/p/[id]/_components/post-grid'
+import { fetchPostsByUsername } from '@/app/actions/fetchPostByUsername'
 
-const ProfilePage = async ({
+export default async function ProfilePage({
   params: { username },
 }: {
-  params: { username: string };
-}) => {
-  // const posts = await fetchPostsByUsername(username);
-
-  // return <PostsGrid posts={posts} />;
-  return <>Page</>
-};
-
-export default ProfilePage;
+  params: { username: string }
+}) {
+  const posts = await fetchPostsByUsername(username)
+  return <PostsGrid posts={posts} />
+}

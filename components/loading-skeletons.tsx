@@ -1,12 +1,12 @@
-import { Card } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Card } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
+import { AspectRatio } from '@/components/ui/aspect-ratio'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog'
 
 export const PostSkeleton = () => {
   return (
@@ -21,8 +21,8 @@ export const PostSkeleton = () => {
 
       <Skeleton className="h-[450px]" />
     </div>
-  );
-};
+  )
+}
 
 export const PostsSkeleton = () => {
   return (
@@ -32,8 +32,8 @@ export const PostsSkeleton = () => {
       <PostSkeleton />
       <PostSkeleton />
     </>
-  );
-};
+  )
+}
 
 export const UserAvatarSkeleton = () => {
   return (
@@ -44,17 +44,17 @@ export const UserAvatarSkeleton = () => {
         <Skeleton className="h-4 w-[200px]" />
       </div>
     </div>
-  );
-};
+  )
+}
 
 export const SinglePostSkeleton = () => {
   return (
-    <Card className="max-w-3xl lg:max-w-4xl mx-auto hidden md:flex">
-      <div className="relative overflow-hidden h-[450px] max-w-sm lg:max-w-lg  w-full">
+    <Card className="mx-auto hidden max-w-3xl md:flex lg:max-w-4xl">
+      <div className="relative h-[450px] w-full max-w-sm overflow-hidden lg:max-w-lg">
         <Skeleton className="h-full w-full" />
       </div>
 
-      <div className="flex max-w-sm flex-col flex-1">
+      <div className="flex max-w-sm flex-1 flex-col">
         <div className="flex items-center justify-between border-b px-5 py-3">
           <div className="flex items-center space-x-2">
             <Skeleton className="h-12 w-12 rounded-full" />
@@ -64,7 +64,7 @@ export const SinglePostSkeleton = () => {
           </div>
         </div>
 
-        <div className="px-5 space-y-3 mt-8">
+        <div className="mt-8 space-y-3 px-5">
           <UserAvatarSkeleton />
           <UserAvatarSkeleton />
           <UserAvatarSkeleton />
@@ -72,18 +72,18 @@ export const SinglePostSkeleton = () => {
         </div>
       </div>
     </Card>
-  );
-};
+  )
+}
 
 export const MorePostsSkelton = () => {
   return (
-    <div className="relative overflow-hidden h-[250px] grid grid-cols-3 gap-0.5 w-full">
+    <div className="relative grid h-[250px] w-full grid-cols-3 gap-0.5 overflow-hidden">
       <Skeleton className="h-full w-full" />
       <Skeleton className="h-full w-full" />
       <Skeleton className="h-full w-full" />
     </div>
-  );
-};
+  )
+}
 
 export function EditPostSkeleton() {
   return (
@@ -93,7 +93,7 @@ export function EditPostSkeleton() {
           <DialogTitle>Edit info</DialogTitle>
         </DialogHeader>
 
-        <div className="h-96 md:h-[250px] overflow-hidden rounded-md">
+        <div className="h-96 overflow-hidden rounded-md md:h-[250px]">
           <AspectRatio ratio={1 / 1} className="relative h-full">
             <Skeleton className="h-full w-full" />
           </AspectRatio>
@@ -102,5 +102,21 @@ export function EditPostSkeleton() {
         <Skeleton className="h-10 w-full" />
       </DialogContent>
     </Dialog>
-  );
+  )
+}
+
+export function PostGridSkeleton() {
+  return (
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
+      <div className="group relative flex h-44 items-center justify-center md:h-64 lg:h-80">
+        <Skeleton className="h-full w-full" />
+      </div>
+      <div className="group relative flex h-44 items-center justify-center md:h-64 lg:h-80">
+        <Skeleton className="h-full w-full" />
+      </div>
+      <div className="group relative flex h-44 items-center justify-center md:h-64 lg:h-80">
+        <Skeleton className="h-full w-full" />
+      </div>
+    </div>
+  )
 }
