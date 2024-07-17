@@ -1,14 +1,11 @@
 import './globals.css'
 import { Toaster } from 'sonner'
 import type { Metadata } from 'next'
-import { Poppins } from 'next/font/google'
+import { calSans } from '@/app/fonts'
 import { ThemeProvider } from '@/components/theme-provider'
 import { extractRouterConfig } from 'uploadthing/server'
 import { ourFileRouter } from '@/app/api/uploadthing/core'
 import { NextSSRPlugin } from '@uploadthing/react/next-ssr-plugin'
-
-// TODO: need to update font
-const font = Poppins({ subsets: ['latin'], weight: ['500'] })
 
 // TODO: update metadata, favicons
 export const metadata: Metadata = {
@@ -24,7 +21,7 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={font.className}>
+      <body className={calSans.className}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
