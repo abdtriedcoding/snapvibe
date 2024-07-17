@@ -1,6 +1,4 @@
 /** @type {import('next').NextConfig} */
-
-// TODO: might add github profile url need to check by login
 const nextConfig = {
   images: {
     remotePatterns: [

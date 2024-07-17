@@ -1,6 +1,6 @@
 import Post from './_components/post'
+import LoadMore from './_components/load-more'
 import { getPosts } from '@/app/actions/getPosts'
-// import { LoadMore } from './_components/load-more'
 
 export default async function HomePage() {
   const posts = await getPosts(1)
@@ -9,8 +9,7 @@ export default async function HomePage() {
       {posts.map((post) => (
         <Post key={post.id} post={post} />
       ))}
-      {/* TODO: fix this lode more functionality */}
-      {/* <LoadMore /> */}
+      <LoadMore />
     </>
   )
 }
