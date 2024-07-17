@@ -1,15 +1,19 @@
 import NextAuth from 'next-auth'
 import prisma from '@/lib/prisma'
-import Google from 'next-auth/providers/google'
-import GitHub from 'next-auth/providers/github'
+import authConfig from '@/auth.config'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  adapter: PrismaAdapter(prisma),
-  providers: [Google, GitHub],
+  pages: {
+    signIn: '/login',
+  },
   callbacks: {
     async session({ session, token }) {
       if (token) {
+        session.user.id = token.id as string
+        session.user.name = token.name
+        session.user.email = token.email!
+        session.user.image = token.picture
         session.user.username = token.username as string
       }
 
@@ -17,34 +21,37 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
 
     async jwt({ token }) {
-      const prismaUser = await prisma.user.findFirst({
+      if (!token.email) return token
+
+      const existingUser = await prisma.user.findFirst({
         where: {
           email: token.email,
         },
       })
 
-      if (!prismaUser) {
-        return token
-      }
+      if (!existingUser) return token
 
-      if (!prismaUser.username) {
+      if (!existingUser.username) {
         await prisma.user.update({
           where: {
-            id: prismaUser.id,
+            id: existingUser.id,
           },
           data: {
-            username: prismaUser.name?.split(' ').join('').toLowerCase(),
+            username: existingUser.name?.split(' ').join('').toLowerCase(),
           },
         })
       }
 
       return {
-        username: prismaUser.username,
-        ...token,
+        id: existingUser.id,
+        name: existingUser.name,
+        email: existingUser.email,
+        username: existingUser.username,
+        picture: existingUser.image,
       }
     },
   },
-  pages: {
-    signIn: '/login',
-  },
+  adapter: PrismaAdapter(prisma),
+  session: { strategy: 'jwt' },
+  ...authConfig,
 })
