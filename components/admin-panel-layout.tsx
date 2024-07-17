@@ -1,7 +1,7 @@
 'use client'
 
 import { cn } from '@/lib/utils'
-import { type User } from '@prisma/client'
+import { type User } from 'next-auth'
 import { useStore } from '@/hook/use-store'
 import { useSidebarToggle } from '@/hook/use-sidebar-toggle'
 import Sidebar from '@/components/sidebar'
@@ -12,7 +12,7 @@ export default function AdminPanelLayout({
   user,
 }: {
   children: React.ReactNode
-  user: User | null
+  user: User | undefined
 }) {
   const sidebar = useStore(useSidebarToggle, (state) => state)
   if (!sidebar) return null
