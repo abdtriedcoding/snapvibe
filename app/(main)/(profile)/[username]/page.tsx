@@ -1,4 +1,4 @@
-import PostsGrid from '@/app/(post)/p/[id]/_components/post-grid'
+import PostsGrid from '@/app/(main)/(post)/p/[id]/_components/post-grid'
 import { fetchPostsByUsername } from '@/app/actions/fetchPostByUsername'
 
 export default async function ProfilePage({

@@ -2,7 +2,6 @@ import useMount from '@/hook/useMount'
 import { type User } from 'next-auth'
 import { type CommentWithUser } from '@/lib/definitions'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import Comment from '@/app/(post)/p/[id]/_components/comment'
 import {
   Dialog,
   DialogContent,
@@ -10,6 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import Comment from './comment'
 
 interface ModalProps {
   children: React.ReactNode

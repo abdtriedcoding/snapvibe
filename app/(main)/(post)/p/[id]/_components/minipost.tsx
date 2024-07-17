@@ -3,8 +3,8 @@
 import Link from 'next/link'
 import { type User } from 'next-auth'
 import { type PostWithExtras } from '@/lib/definitions'
-import Timestamp from '@/app/(home)/_components/timestamp'
-import PostOptions from '@/app/(home)/_components/post-options'
+import Timestamp from '@/app/(main)/(home)/_components/timestamp'
+import PostOptions from '@/app/(main)/(home)/_components/post-options'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 export default function MiniPost({
