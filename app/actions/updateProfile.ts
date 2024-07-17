@@ -38,5 +38,5 @@ export async function updateProfile(values: z.infer<typeof UserSchema>) {
   } catch (error) {
     return Promise.reject({ error: 'Failed to update profile' })
   }
-  revalidatePath('/dashboard')
+  revalidatePath('/')
 }

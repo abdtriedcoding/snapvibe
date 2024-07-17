@@ -50,6 +50,6 @@ export async function updatePost(
     return Promise.reject({ error: 'Failed to update post' })
   }
 
-  revalidatePath('/dashboard')
-  redirect('/dashboard')
+  revalidatePath('/')
+  redirect('/')
 }

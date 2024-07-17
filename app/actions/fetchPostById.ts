@@ -18,6 +18,7 @@ export async function fetchPostById(id: string) {
           },
         },
         likes: true,
+        // TODO: need to check is this entire savedBy table even required
         savedBy: true,
         user: true,
       },

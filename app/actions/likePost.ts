@@ -43,7 +43,7 @@ export async function likePost(postId: string) {
     } catch (error) {
       throw new Error('Failed to unlike post')
     }
-    revalidatePath('/dashboard')
+    revalidatePath('/')
   } else {
     try {
       await prisma.like.create({
@@ -55,6 +55,6 @@ export async function likePost(postId: string) {
     } catch (error) {
       throw new Error('Failed to like post')
     }
-    revalidatePath('/dashboard')
+    revalidatePath('/')
   }
 }
