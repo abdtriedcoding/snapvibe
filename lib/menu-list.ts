@@ -1,16 +1,13 @@
+import { type User } from 'next-auth'
 import {
-  Tag,
-  Users,
   Settings,
   Bookmark,
   SquarePen,
-  LayoutGrid,
   type LucideIcon,
   UserPen,
   Home,
   Search,
 } from 'lucide-react'
-import { type User } from 'next-auth'
 
 type Menu = {
   href: string
@@ -30,9 +27,9 @@ export function getMenuList(pathname: string, user: User | undefined): Group[] {
       groupLabel: '',
       menus: [
         {
-          href: '/dashboard',
+          href: '/',
           label: 'Home',
-          active: pathname.includes('/dashboard'),
+          active: pathname === '/',
           icon: Home,
         },
       ],
@@ -47,21 +44,21 @@ export function getMenuList(pathname: string, user: User | undefined): Group[] {
           icon: Search,
         },
         {
-          href: '/dashboard/create',
+          href: '/create',
           label: 'Create',
-          active: pathname.includes('/dashboard/create'),
+          active: pathname.includes('/create'),
           icon: SquarePen,
         },
         {
-          href: `/dashboard/${user?.username}/saved`,
+          href: `/${user?.username}/saved`,
           label: 'Saved',
-          active: pathname.includes(`/dashboard/${user?.username}/saved`),
+          active: pathname.includes(`/${user?.username}/saved`),
           icon: Bookmark,
         },
         {
-          href: `/dashboard/${user?.username}`,
+          href: `/${user?.username}`,
           label: 'Profile',
-          active: pathname.includes(`/dashboard/${user?.username}`),
+          active: pathname.includes(`/${user?.username}`),
           icon: UserPen,
         },
       ],
@@ -70,9 +67,9 @@ export function getMenuList(pathname: string, user: User | undefined): Group[] {
       groupLabel: 'Settings',
       menus: [
         {
-          href: '/dashboard/edit-profile',
+          href: '/edit-profile',
           label: 'Settings',
-          active: pathname.includes('/dashboard/edit-profile'),
+          active: pathname.includes('/edit-profile'),
           icon: Settings,
         },
       ],

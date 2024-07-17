@@ -2,7 +2,7 @@
 
 import { login } from '@/app/actions/auth'
 import { FcGoogle } from 'react-icons/fc'
-import { FaXTwitter } from 'react-icons/fa6'
+import { FaGithub } from 'react-icons/fa'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -25,9 +25,9 @@ export default function LoginModalContent() {
             <FcGoogle className="mr-2 h-5 w-5" />
             Continue with Google
           </Button>
-          <Button onClick={() => login('twitter')} variant="outline">
-            <FaXTwitter className="mr-2 h-5 w-5" />
-            Continue with Twitter
+          <Button onClick={() => login('github')} variant="outline">
+            <FaGithub className="mr-2 h-5 w-5" />
+            Continue with Github
           </Button>
         </div>
       </CardContent>
