@@ -6,7 +6,11 @@ import {
   SquarePen,
   LayoutGrid,
   type LucideIcon,
+  UserPen,
+  Home,
+  Search,
 } from 'lucide-react'
+import { type User } from 'next-auth'
 
 type Menu = {
   href: string
@@ -20,16 +24,16 @@ type Group = {
   menus: Menu[]
 }
 
-export function getMenuList(pathname: string): Group[] {
+export function getMenuList(pathname: string, user: User | undefined): Group[] {
   return [
     {
       groupLabel: '',
       menus: [
         {
           href: '/dashboard',
-          label: 'Dashboard',
+          label: 'Home',
           active: pathname.includes('/dashboard'),
-          icon: LayoutGrid,
+          icon: Home,
         },
       ],
     },
@@ -37,22 +41,28 @@ export function getMenuList(pathname: string): Group[] {
       groupLabel: 'Contents',
       menus: [
         {
-          href: '',
-          label: 'Posts',
-          active: pathname.includes('/posts'),
-          icon: SquarePen,
+          href: '/search',
+          label: 'Search',
+          active: pathname.includes('/search'),
+          icon: Search,
         },
         {
           href: '/dashboard/create',
           label: 'Create',
-          active: pathname.includes('/categories'),
+          active: pathname.includes('/dashboard/create'),
+          icon: SquarePen,
+        },
+        {
+          href: `/dashboard/${user?.username}/saved`,
+          label: 'Saved',
+          active: pathname.includes(`/dashboard/${user?.username}/saved`),
           icon: Bookmark,
         },
         {
-          href: '/tags',
-          label: 'Tags',
-          active: pathname.includes('/tags'),
-          icon: Tag,
+          href: `/dashboard/${user?.username}`,
+          label: 'Profile',
+          active: pathname.includes(`/dashboard/${user?.username}`),
+          icon: UserPen,
         },
       ],
     },
@@ -60,15 +70,9 @@ export function getMenuList(pathname: string): Group[] {
       groupLabel: 'Settings',
       menus: [
         {
-          href: '/users',
-          label: 'Users',
-          active: pathname.includes('/users'),
-          icon: Users,
-        },
-        {
-          href: '/account',
-          label: 'Account',
-          active: pathname.includes('/account'),
+          href: '/dashboard/edit-profile',
+          label: 'Settings',
+          active: pathname.includes('/dashboard/edit-profile'),
           icon: Settings,
         },
       ],

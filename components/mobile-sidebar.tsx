@@ -16,7 +16,7 @@ import LoginModal from './login-modal'
 export default function MobileSidebar({ user }: { user: User | undefined }) {
   return (
     <header className="sticky top-0 z-10 w-full bg-background/95 shadow backdrop-blur supports-[backdrop-filter]:bg-background/60 dark:shadow-secondary">
-      <div className="mx-4 flex h-14 items-center sm:mx-8">
+      <div className="mx-4 flex h-14 items-center">
         <Sheet>
           <SheetTrigger className="lg:hidden" asChild>
             <Button className="h-8" variant="outline" size="icon">

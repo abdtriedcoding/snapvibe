@@ -32,10 +32,10 @@ export default function UserNav({ user }: { user: User | undefined }) {
                 className="relative h-8 w-8 rounded-full"
               >
                 <Avatar className="h-8 w-8">
-                  {/* TODO: add default photo */}
-                  {user?.image && (
-                    <AvatarImage src={user?.image} alt="Avatar" />
-                  )}
+                  <AvatarImage
+                    src={user?.image ?? '/default-userimage.jpg'}
+                    alt="Avatar"
+                  />
                   <AvatarFallback className="bg-transparent">
                     {user?.name?.charAt(0)}
                   </AvatarFallback>
@@ -51,9 +51,11 @@ export default function UserNav({ user }: { user: User | undefined }) {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">{user?.name}</p>
-            <p className="text-xs leading-none text-muted-foreground">
-              {user?.email}
-            </p>
+            {user?.email && (
+              <p className="text-xs leading-none text-muted-foreground">
+                {user?.email}
+              </p>
+            )}
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -65,9 +67,12 @@ export default function UserNav({ user }: { user: User | undefined }) {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem className="hover:cursor-pointer" asChild>
-            <Link href="/account" className="flex items-center">
+            <Link
+              href={`/dashboard/${user?.username}`}
+              className="flex items-center"
+            >
               <UserIcon className="mr-3 h-4 w-4 text-muted-foreground" />
-              Account
+              Profile
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>

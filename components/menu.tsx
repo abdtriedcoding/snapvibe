@@ -23,7 +23,7 @@ interface MenuProps {
 
 export default function Menu({ isOpen, user }: MenuProps) {
   const pathname = usePathname()
-  const menuList = getMenuList(pathname)
+  const menuList = getMenuList(pathname, user)
 
   return (
     <ScrollArea className="[&>div>div[style]]:!block">
