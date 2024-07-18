@@ -3,11 +3,11 @@
 import { type z } from 'zod'
 import Image from 'next/image'
 import { toast } from 'sonner'
-import { useState } from 'react'
 import { X } from 'lucide-react'
 import useMount from '@/hook/useMount'
 import { useForm } from 'react-hook-form'
 import { formSchema } from '@/lib/schema'
+import { useState, useEffect } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { UploadDropzone } from '@/lib/uploadthing'
@@ -44,23 +44,27 @@ export default function CreatePage() {
   const pathname = usePathname()
   const router = useRouter()
   const mount = useMount()
-  const [loading, setLoading] = useState(false)
+  const [imageLoaded, setImageLoaded] = useState(false)
+  const [fileUrl, setFileUrl] = useState<string | undefined>(undefined)
 
   const isCreatePage = pathname === '/create'
-  if (!mount) return null
 
-  const fileUrl = form.watch('fileUrl')
+  useEffect(() => {
+    const subscription = form.watch((value) => {
+      setFileUrl(value.fileUrl)
+    })
+    return () => subscription.unsubscribe()
+  }, [form])
 
-  // TODO: check this loading is working properly
   function onSubmit(data: z.infer<typeof formSchema>) {
-    setLoading(true)
     toast.promise(createPost(data), {
       loading: 'Creating post...',
       success: 'Post created successfully',
       error: 'Failed to create post',
     })
-    setLoading(false)
   }
+
+  if (!mount) return null
 
   return (
     <Dialog open={isCreatePage} onOpenChange={(open) => !open && router.back()}>
@@ -76,10 +80,14 @@ export default function CreatePage() {
                   src={fileUrl}
                   alt="Post preview"
                   fill
-                  className="rounded-md object-cover"
+                  className={`rounded-md object-cover transition-opacity duration-700 ease-in-out ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                  onLoad={() => setImageLoaded(true)}
                 />
                 <X
-                  onClick={() => form.setValue('fileUrl', '')}
+                  onClick={() => {
+                    form.setValue('fileUrl', '')
+                    setFileUrl('')
+                  }}
                   className="absolute right-0 top-0 m-2 cursor-pointer"
                 />
               </AspectRatio>
@@ -96,6 +104,7 @@ export default function CreatePage() {
                         onClientUploadComplete={(res) => {
                           if (res?.[0]?.url) {
                             form.setValue('fileUrl', res[0].url)
+                            setFileUrl(res[0].url)
                             toast.success('Picture upload complete')
                           } else {
                             toast.error('Picture upload failed')
@@ -120,7 +129,7 @@ export default function CreatePage() {
                   <FormLabel htmlFor="caption">Caption</FormLabel>
                   <FormControl>
                     <Input
-                      type="caption"
+                      type="text"
                       id="caption"
                       placeholder="Write a caption..."
                       {...field}
@@ -131,7 +140,7 @@ export default function CreatePage() {
               )}
             />
 
-            <Button type="submit" disabled={isSubmitting || loading}>
+            <Button type="submit" disabled={isSubmitting}>
               Create Post
             </Button>
           </form>

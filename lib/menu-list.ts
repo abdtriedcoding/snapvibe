@@ -40,25 +40,25 @@ export function getMenuList(pathname: string, user: User | undefined): Group[] {
         {
           href: '/search',
           label: 'Search',
-          active: pathname.includes('/search'),
+          active: pathname === '/search',
           icon: Search,
         },
         {
           href: '/create',
           label: 'Create',
-          active: pathname.includes('/create'),
+          active: pathname === '/create',
           icon: SquarePen,
         },
         {
           href: `/${user?.username}/saved`,
           label: 'Saved',
-          active: pathname.includes(`/${user?.username}/saved`),
+          active: pathname === `/${user?.username}/saved`,
           icon: Bookmark,
         },
         {
           href: `/${user?.username}`,
           label: 'Profile',
-          active: pathname.includes(`/${user?.username}`),
+          active: pathname === `/${user?.username}`,
           icon: UserPen,
         },
       ],
@@ -69,7 +69,7 @@ export function getMenuList(pathname: string, user: User | undefined): Group[] {
         {
           href: '/edit-profile',
           label: 'Settings',
-          active: pathname.includes('/edit-profile'),
+          active: pathname === '/edit-profile',
           icon: Settings,
         },
       ],
