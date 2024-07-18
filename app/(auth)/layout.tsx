@@ -1,5 +1,10 @@
 import { auth } from '@/lib/auth'
+import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
+
+export const metadata: Metadata = {
+  title: 'Login',
+}
 
 export default async function AuthLayout({
   children,

@@ -1,18 +1,13 @@
 import './globals.css'
 import { Toaster } from 'sonner'
-import type { Metadata } from 'next'
 import { calSans } from '@/app/fonts'
+import { constructMetadata } from '@/lib/utils'
 import { ThemeProvider } from '@/components/theme-provider'
 import { extractRouterConfig } from 'uploadthing/server'
 import { ourFileRouter } from '@/app/api/uploadthing/core'
 import { NextSSRPlugin } from '@uploadthing/react/next-ssr-plugin'
 
-// TODO: update metadata, favicons
-export const metadata: Metadata = {
-  title: 'snapvibe',
-  description:
-    'A visually stunning platform for sharing moments, connecting with friends, and exploring the world through photos and videos.',
-}
+export const metadata = constructMetadata()
 
 export default async function RootLayout({
   children,
