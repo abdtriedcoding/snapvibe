@@ -26,6 +26,10 @@ export function constructMetadata({
     },
     description,
     openGraph: {
+      type: 'website',
+      locale: 'en_US',
+      url: new URL(process.env.NEXT_PUBLIC_APP_URL!),
+      siteName: 'titleDefault',
       title: {
         default: titleDefault,
         template: titleTemplate,
