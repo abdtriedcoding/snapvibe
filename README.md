@@ -55,6 +55,16 @@ bun i
 
 ### Setup .env file taking refrence from .env.example file
 
+### Setup Prisma
+
+Add Database (I used Supabase)
+
+```shell
+bunx prisma generate
+bunx prisma db push
+
+```
+
 ### Start the app
 
 ```shell
